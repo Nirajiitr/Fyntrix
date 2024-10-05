@@ -1,0 +1,46 @@
+import jwt from "jsonwebtoken";
+export const isAuthenticated = (req, res, next) => {
+ 
+  try {
+    const Token = req.cookies.Token;
+    
+    if (!Token) {
+      return res
+        .status(401)
+        .json({ success: false, message: "user not authenticated" });
+    }
+    jwt.verify(Token, process.env.JWT_SECRET_KEY, (err, decode) => {
+      if (err) {
+        if (err.name === "TokenExpiredError") {
+          return res
+            .status(401)
+            .json({
+              success: false,
+              message: "Session is Expired! login again.",
+            });
+        } else if (err.name === "JsonWebTokenError") {
+          return res
+            .status(401)
+            .json({ success: false, message: "Invalid Token!" });
+        } else {
+          return res
+            .status(401)
+            .json({ success: false, message: "verification faild!" });
+        }
+      }
+      req.user = {
+        _id: decode._id,
+        fullname: decode.fullname,
+        email: decode.email,
+        role: decode.role
+      };
+
+      next();
+    });
+  } catch (error) {
+    console.error("Authentication error:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Server error", error });
+  }
+};
