@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "./Pages/authPage/Login";
-import Register from "./Pages/authPage/register";
+import Register from "./Pages/authPage/Register";
 import AuthLayout from "./components/Auth/Layout";
 import AdminLayout from "./components/Admin/Layout";
 import AdminDashbord from "./Pages/adminPage/Dashbord";
