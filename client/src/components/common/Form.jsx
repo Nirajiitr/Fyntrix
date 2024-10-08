@@ -10,7 +10,6 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 
-
 const CommonForm = ({
   formControls,
   formData,
@@ -55,12 +54,12 @@ const CommonForm = ({
           }
         >
           <SelectTrigger className="w-full">
-            <SelectValue placeholder={controlItem.placeholder} />
+            <SelectValue placeholder={controlItem.label} />
           </SelectTrigger>
           <SelectContent>
-            {controlItem.option &&
-              controlItem.option.length > 0 &&
-              controlItem.option.map((optionItem) => (
+            {controlItem.options &&
+              controlItem.options.length > 0 &&
+              controlItem.options.map((optionItem) => (
                 <SelectItem key={optionItem.id} value={optionItem.id}>
                   {optionItem.label}
                 </SelectItem>

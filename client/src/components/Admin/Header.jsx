@@ -2,10 +2,10 @@ import React from "react";
 import { Button } from "../ui/button";
 import { AlignLeft, LogOut } from "lucide-react";
 
-const AdminHeader = () => {
+const AdminHeader = ({setOpenSidebar}) => {
   return (
     <header className=" flex items-center justify-between px-4 py-3 bg-background border-b">
-      <Button className="lg:hidden sm:block">
+      <Button onClick={()=>setOpenSidebar(true)} className="lg:hidden sm:block">
         <AlignLeft />
         <span className="sr-only">Toggle Menu</span>
       </Button>
