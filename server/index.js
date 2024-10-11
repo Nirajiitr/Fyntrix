@@ -3,7 +3,8 @@ import cors from "cors";
 import "dotenv/config";
 import connectDB from "./db/connectDB.js";
 import cookieParser from "cookie-parser";
-import authRoute from "./routes/authRoute.js"
+import authRoute from "./routes/auth/authRoute.js"
+import productsRoute from "./routes/admin/productsRoute.js"
 const app = express();
 const PORT = process.env.PORT;
 const CLIENT_BASE_URL = process.env.CLIENT_BASE_URL;
@@ -33,6 +34,7 @@ app.use(cookieParser());
 
 // routes
  app.use("/api/auth", authRoute)
+ app.use("/api/admin/products", productsRoute)
 //server
 app.listen(PORT || 8080, () => {
   console.log(`server is running on port: ${PORT}`);
