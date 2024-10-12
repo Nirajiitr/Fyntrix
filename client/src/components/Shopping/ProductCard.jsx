@@ -3,11 +3,11 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 
-const ShoppingProductCard = ({ product }) => {
+const ShoppingProductCard = ({ product, handleGetProductDetails }) => {
    
   return (
     <Card  className="w-full max-w-sm mx-auto">
-      <div>
+      <div className="cursor-pointer" onClick={()=>handleGetProductDetails(product?._id)}>
         <div className="relative">
           <img
             src={product?.image}
@@ -27,8 +27,8 @@ const ShoppingProductCard = ({ product }) => {
                 <span className={` text-sm text-muted-foreground`}>{product?.brand}</span>
             </div>
             <div className="flex justify-between items-center mb-2">
-                <span className={`${product.salePrice>0 ? "line-through": ""} text-lg font-semibold text-primary`}>₨.{product?.price}</span>
-                <span className={`${product.salePrice>0 ? "block": "hidden"} text-lg font-bold`}>₨.{product?.salePrice}</span>
+                <span className={`${product?.salePrice>0 ? "line-through": ""} text-lg font-semibold text-primary`}>₨.{product?.price}</span>
+                <span className={`${product?.salePrice>0 ? "block": "hidden"} text-lg font-bold`}>₨.{product?.salePrice}</span>
             </div>
         </CardContent>
         <CardFooter >

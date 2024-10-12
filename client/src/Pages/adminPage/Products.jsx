@@ -9,7 +9,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { addProductFormElements } from "@/config";
-import { sampleProductList } from "@/config/productSample";
+
 import {
   addNewProduct,
   deteteProduct,
@@ -89,20 +89,8 @@ const AdminProducts = () => {
         </Button>
       </div>
       <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {productList && productList.length > 0 ? (
-          productList.map((product) => (
-            <AdminProductCard
-              setCurrentEditedId={setCurrentEditedId}
-              setOpenProductsDialog={setOpenProductsDialog}
-              setFormData={setFormData}
-              key={product._id}
-              product={product}
-              handleDelete={handleDelete}
-            />
-          ))
-        ) : (
-          <>
-            {sampleProductList.map((product) => (
+        {productList && productList.length > 0
+          ? productList.map((product) => (
               <AdminProductCard
                 setCurrentEditedId={setCurrentEditedId}
                 setOpenProductsDialog={setOpenProductsDialog}
@@ -111,9 +99,8 @@ const AdminProducts = () => {
                 product={product}
                 handleDelete={handleDelete}
               />
-            ))}
-          </>
-        )}
+            ))
+          : null}
       </div>
       <Sheet
         open={openCreateProductsDialog}
