@@ -4,7 +4,8 @@ import "dotenv/config";
 import connectDB from "./db/connectDB.js";
 import cookieParser from "cookie-parser";
 import authRoute from "./routes/auth/authRoute.js"
-import productsRoute from "./routes/admin/productsRoute.js"
+import adminProductsRoute from "./routes/admin/productsRoute.js"
+import shopProductsRoute from "./routes/shop/productsRoute.js"
 const app = express();
 const PORT = process.env.PORT;
 const CLIENT_BASE_URL = process.env.CLIENT_BASE_URL;
@@ -34,7 +35,8 @@ app.use(cookieParser());
 
 // routes
  app.use("/api/auth", authRoute)
- app.use("/api/admin/products", productsRoute)
+ app.use("/api/admin/products", adminProductsRoute)
+ app.use("/api/shop/products", shopProductsRoute)
 //server
 app.listen(PORT || 8080, () => {
   console.log(`server is running on port: ${PORT}`);

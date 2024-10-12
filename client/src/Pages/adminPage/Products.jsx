@@ -9,8 +9,10 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { addProductFormElements } from "@/config";
+import { sampleProductList } from "@/config/productSample";
 import {
   addNewProduct,
+  deteteProduct,
   editProduct,
   getAllProduct,
 } from "@/store/admin/product-slice";
@@ -36,7 +38,7 @@ const AdminProducts = () => {
   const [currentEditedId, setCurrentEditedId] = useState(null);
   const dispatch = useDispatch();
   const { productList } = useSelector((state) => state.adminProducts);
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -52,7 +54,7 @@ const AdminProducts = () => {
             setFormData(initialState);
             setOpenProductsDialog(false);
             setCurrentEditedId(null);
-            toast.success(data.payload.message);
+            toast.success(data.payload.message || "edited successfully");
           }
         })
       : dispatch(addNewProduct({ ...formData, image: uploadedImgUrl })).then(
@@ -62,7 +64,7 @@ const AdminProducts = () => {
               setImgFile(null);
               setFormData(initialState);
               setOpenProductsDialog(false);
-              toast.success(data.payload.message);
+              toast.success(data.payload.message || "added successfully");
             }
           }
         );
@@ -71,6 +73,14 @@ const AdminProducts = () => {
     dispatch(getAllProduct());
   }, [dispatch]);
 
+  const handleDelete = (deleteProductId) => {
+    dispatch(deteteProduct(deleteProductId)).then((data) => {
+      if (data.payload.success) {
+        toast.success(data.payload.message || "deleted successfully");
+        dispatch(getAllProduct());
+      }
+    });
+  };
   return (
     <>
       <div className="mb-5 w-full flex justify-end">
@@ -87,10 +97,22 @@ const AdminProducts = () => {
               setFormData={setFormData}
               key={product._id}
               product={product}
+              handleDelete={handleDelete}
             />
           ))
         ) : (
-          <div>you not add any product yet</div>
+          <>
+            {sampleProductList.map((product) => (
+              <AdminProductCard
+                setCurrentEditedId={setCurrentEditedId}
+                setOpenProductsDialog={setOpenProductsDialog}
+                setFormData={setFormData}
+                key={product._id}
+                product={product}
+                handleDelete={handleDelete}
+              />
+            ))}
+          </>
         )}
       </div>
       <Sheet
@@ -123,7 +145,6 @@ const AdminProducts = () => {
               setFormData={setFormData}
               buttonText={currentEditedId !== null ? "Edit" : "Add"}
               formControls={addProductFormElements}
-              
             />
           </div>
         </SheetContent>
