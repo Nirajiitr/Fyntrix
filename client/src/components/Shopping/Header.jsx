@@ -1,5 +1,5 @@
 import { HomeIcon, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
@@ -15,33 +15,69 @@ import {
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { logoutUser } from "@/store/auth-slice";
+import CartWrapper from "./CartWrapper";
+import { getCartItems } from "@/store/shop/cart-slice";
 
 const ShoppingHeader = () => {
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.shopCart);
+  const [openCart, setOpenCart] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(getCartItems(user?._id));
+  }, [dispatch]);
+
+  const handleNavigatNavbar = (getCurrentMemuItem) => {
+    sessionStorage.removeItem("filter");
+    const currentFilter =
+      getCurrentMemuItem.id !== "home"
+        ? {
+            category: [getCurrentMemuItem.id],
+          }
+        : null;
+
+        sessionStorage.setItem("filter", JSON.stringify(currentFilter))
+        navigate(getCurrentMemuItem.path)
+  };
+
   const MenuItem = () => {
     return (
       <nav className="flex flex-col mb-3 lg:items-center gap-6 lg:flex-row">
         {shoppingHeaderMenuItems.map((menuItem) => (
-          <Link
+          <label
             key={menuItem.id}
-            to={menuItem.path}
-            className="text-sm font-medium"
+            onClick={() => handleNavigatNavbar(menuItem)}
+            className="text-sm font-medium cursor-pointer"
           >
             {menuItem.label}
-          </Link>
+          </label>
         ))}
       </nav>
     );
   };
+
   const HearderRight = () => {
     return (
       <div className="flex items-center gap-4 justify-between">
-        <Button variant="outline" size="icon">
-          <ShoppingCart className="size-6" />
-          <span className="sr-only">User cart</span>
-        </Button>
+        <Sheet open={openCart} onOpenChange={() => setOpenCart(false)}>
+          <Button
+            onClick={() => setOpenCart(true)}
+            variant="outline"
+            size="icon"
+          >
+            <ShoppingCart className="size-6" />
+            <span className="sr-only">User cart</span>
+          </Button>
+          <CartWrapper
+            cartItems={
+              cartItems && cartItems.items && cartItems.items.length > 0
+                ? cartItems.items
+                : []
+            }
+          />
+        </Sheet>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="bg-black">
@@ -73,6 +109,7 @@ const ShoppingHeader = () => {
       </div>
     );
   };
+
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
       <div className="flex h-16 items-center justify-between px-4 md:px-6 ">

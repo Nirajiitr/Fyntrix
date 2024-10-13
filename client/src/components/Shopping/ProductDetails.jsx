@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { StarIcon } from "lucide-react";
 import { Input } from "../ui/input";
 
-const ProductDetails = ({ open, setOpen, productDetails }) => {
+const ProductDetails = ({ open, setOpen, productDetails, handleCartItem }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTitle>
@@ -56,7 +56,7 @@ const ProductDetails = ({ open, setOpen, productDetails }) => {
             <span className="text-muted-foreground">(5)</span>
           </div>
           <div className="my-5">
-            <Button className="w-full">Add to cart</Button>
+            <Button onClick={()=>handleCartItem(productDetails?._id)} className="w-full">Add to cart</Button>
           </div>
           <Separator />
           <div className="max-h-[300px] overflow-auto">
