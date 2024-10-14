@@ -39,7 +39,7 @@ const addItemsToCart = async (req, res) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Server error occurred while finding products",
+      message: "Server error occurred while adding cart",
     });
   }
 };
@@ -88,7 +88,7 @@ const getCartItems = async (req, res) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Server error occurred while finding products",
+      message: "Server error occurred while finding cart",
     });
   }
 };
@@ -144,7 +144,7 @@ const updateCartItems = async (req, res) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Server error occurred while finding products",
+      message: "Server error occurred while updating cart",
     });
   }
 };
@@ -197,7 +197,7 @@ const deleteCartItems = async (req, res) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Server error occurred while finding products",
+      message: "Server error occurred while deleting cart",
     });
   }
 };

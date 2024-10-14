@@ -30,6 +30,9 @@ const setProduct = async (req, res) => {
       salePrice,
       totalStock,
     } = req.body;
+    if(!image || !title || !description || !category || !brand || !price || !salePrice || !totalStock){
+      return res.status(400).json({success: false, message: "all field are required"})
+    }
     const newProduct = new Product({
       image,
       title,

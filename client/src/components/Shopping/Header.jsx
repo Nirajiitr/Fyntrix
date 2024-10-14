@@ -70,7 +70,7 @@ const ShoppingHeader = () => {
             <ShoppingCart className="size-6" />
             <span className="sr-only">User cart</span>
           </Button>
-          <CartWrapper
+          <CartWrapper setOpenCart={setOpenCart}
             cartItems={
               cartItems && cartItems.items && cartItems.items.length > 0
                 ? cartItems.items
