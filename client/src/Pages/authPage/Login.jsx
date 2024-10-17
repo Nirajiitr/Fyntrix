@@ -22,7 +22,7 @@ const Login = () => {
       Login to Fyntrix - Your Shopping Awaits
       </h1>
       {
-         <CommonForm formControls={loginFormControls} formData={formData} setFormData={setFormData} buttonText={"Sign Up"} onSubmit={handleSubmit} />
+         <CommonForm formControls={loginFormControls} formData={formData} setFormData={setFormData} buttonText={"Login"} onSubmit={handleSubmit} />
       }
       <div className="mt-2">
     <Link to="/auth/register" className=' font-medium text-primary hover:underline'>Don't have an account</Link>

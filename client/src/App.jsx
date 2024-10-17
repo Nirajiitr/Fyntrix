@@ -32,7 +32,7 @@ const App = () => {
   );
   const location = useLocation();
   useEffect(() => {
-    if ( location.pathname !== "/" && location.pathname !== "/auth") {
+    if ( location.pathname !== "/" ) {
       dispatch(checkAuth()).finally(() => {
         setAuthChecked(true);
       });
