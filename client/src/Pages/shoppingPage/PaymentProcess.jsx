@@ -3,6 +3,7 @@ import { savePayment } from "@/store/shop/order-slice";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate} from "react-router-dom";
+import { PuffLoader } from "react-spinners";
 
 
 const PaymentProcess=()=> {
@@ -30,7 +31,10 @@ const PaymentProcess=()=> {
       }, [sessionId, dispatch]);
     
   return (
-    <div>PaymentProcess....</div>
+    <div className="w-screen h-screen flex items-center justify-center">
+         <PuffLoader
+ color="#3671d6" size="40px" />
+    </div>
   )
 }
 

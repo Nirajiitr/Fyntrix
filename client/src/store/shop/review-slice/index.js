@@ -52,7 +52,7 @@ const ShopReviewSlice = createSlice({
         (state.isLoading = false);
       })
       .addCase(addReview.rejected, (state, action) => {
-        (state.isLoading = false), toast.success(action?.payload?.message);
+        (state.isLoading = false), toast.error(action?.payload?.message);
       })
       .addCase(getReviews.pending, (state) => {
         state.isLoading = true;

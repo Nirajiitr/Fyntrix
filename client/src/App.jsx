@@ -22,7 +22,7 @@ import Failure from "./Pages/Failure";
 import PaymentProcess from "./Pages/shoppingPage/PaymentProcess";
 import SearchResults from "./Pages/shoppingPage/SearchResults";
 import DefaultPage from "./Pages/DefaultPage";
-import {  PuffLoader } from "react-spinners";
+import { PuffLoader } from "react-spinners";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -31,8 +31,10 @@ const App = () => {
     (state) => state.auth
   );
   const location = useLocation();
+
   useEffect(() => {
-    if ( location.pathname !== "/" ) {
+    const isDefaultPage = location.pathname === "/";
+    if (!isDefaultPage) {
       dispatch(checkAuth()).finally(() => {
         setAuthChecked(true);
       });
@@ -41,10 +43,11 @@ const App = () => {
     }
   }, [dispatch, location.pathname]);
   if (isLoading && !authChecked) {
-    return <div className="w-screen h-screen flex items-center justify-center">
-         <PuffLoader
- color="#3671d6" size="40px" />
-    </div>;
+    return (
+      <div className="w-screen h-screen flex items-center justify-center">
+        <PuffLoader color="#3671d6" size="40px" />
+      </div>
+    );
   }
   return (
     <div className="flex flex-col overflow-hidden bg-white">

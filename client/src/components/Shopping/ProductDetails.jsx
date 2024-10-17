@@ -43,8 +43,8 @@ const ProductDetails = ({ open, setOpen, productDetails, handleCartItem }) => {
     if (productDetails?._id !== null) dispatch(getReviews(productDetails?._id));
   }, [productDetails]);
 
-  const totleReviews = reviewtList.length
-  const avgReviews = reviewtList.reduce((sum, reviewItem)=>sum + reviewItem.reviewValue, 0)/totleReviews
+  const totleReviews = reviewtList?.length
+  const avgReviews = reviewtList.length>0 ? reviewtList.reduce((sum, reviewItem)=>sum + reviewItem.reviewValue, 0)/totleReviews : 0
 
 
   return (
