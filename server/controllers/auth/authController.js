@@ -69,14 +69,12 @@ const login = async (req, res) => {
 
     const { password: _, ...userData } = isUser._doc;
     res
-      .cookie("Token", Token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-      })
+      
       .json({
         userData,
         message: "login successfully",
         success: true,
+        Token 
       });
   } catch (error) {
     console.log(error);

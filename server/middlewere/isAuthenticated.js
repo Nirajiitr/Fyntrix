@@ -2,13 +2,12 @@ import jwt from "jsonwebtoken";
 export const isAuthenticated = (req, res, next) => {
  
   try {
-    const Token = req.cookies.Token;
-    
+    const authHeader  = req.headers["authorization"]
+    const Token = authHeader && authHeader.split(" ")[1]
     if (!Token) {
-      return res
-        .status(401)
-        .json({ success: false, message: "user not authenticated" });
+      return res.status(401).json({ message: "user not authenticated" });
     }
+    
     jwt.verify(Token, process.env.JWT_SECRET_KEY, (err, decode) => {
       if (err) {
         if (err.name === "TokenExpiredError") {

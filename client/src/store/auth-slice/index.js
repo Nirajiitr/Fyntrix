@@ -54,16 +54,18 @@ export const logoutUser = createAsyncThunk("/auth/logout", async () => {
 });
 export const checkAuth = createAsyncThunk(
   "/auth/checkauth",
-  async (_, { rejectWithValue }) => {
+  async (Token, { rejectWithValue }) => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVER_BASE_URL}/api/auth/check-auth`,
         {
           withCredentials: true,
           headers: {
+            Authorization : `Bearer ${Token}`,
             "Cache-control":
               "no-store, no-cache, must-revalidate, proxy-revalidate",
           },
+          
         }
       );
       return response.data;
@@ -106,6 +108,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isAuthenticated = action.payload.success;
         state.user = action.payload.userData;
+        sessionStorage.setItem("Token", JSON.stringify(action.payload.Token));
         toast.success(action.payload.message || "Login successful");
       })
       .addCase(loginUser.rejected, (state, action) => {

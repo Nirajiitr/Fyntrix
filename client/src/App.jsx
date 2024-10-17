@@ -27,6 +27,7 @@ import { PuffLoader } from "react-spinners";
 const App = () => {
   const dispatch = useDispatch();
   const [authChecked, setAuthChecked] = useState(false);
+  const Token = sessionStorage.getItem("Token") && JSON.parse(sessionStorage.getItem("Token"))
   const { isAuthenticated, user, isLoading } = useSelector(
     (state) => state.auth
   );
@@ -35,7 +36,7 @@ const App = () => {
   useEffect(() => {
     const isDefaultPage = location.pathname === "/";
     if (!isDefaultPage) {
-      dispatch(checkAuth()).finally(() => {
+      dispatch(checkAuth(Token)).finally(() => {
         setAuthChecked(true);
       });
     } else {
