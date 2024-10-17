@@ -1,6 +1,7 @@
 import { Address } from "../../models/addressModel.js";
 
 const addAddress = async (req, res) => {
+
   try {
     const { userId, address, city, pincode, phone, notes } = req.body;
     if (!userId || !address || !city || !pincode || !phone || !notes) {
@@ -31,6 +32,7 @@ const addAddress = async (req, res) => {
   }
 };
 const getAllAdress = async (req, res) => {
+ 
   try {
     const { userId } = req.params;
     if (!userId) {

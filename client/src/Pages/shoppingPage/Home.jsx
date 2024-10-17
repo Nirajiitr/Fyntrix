@@ -19,12 +19,16 @@ import {
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllFilterProduct, getProductDetails } from "@/store/shop/product-slice";
+import {
+  getAllFilterProduct,
+  getProductDetails,
+} from "@/store/shop/product-slice";
 import ShoppingProductCard from "@/components/Shopping/ProductCard";
 import { useNavigate } from "react-router-dom";
 import { addItemsToCart, getCartItems } from "@/store/shop/cart-slice";
 import ProductDetails from "@/components/Shopping/ProductDetails";
 import toast from "react-hot-toast";
+import { PuffLoader } from "react-spinners";
 
 const categores = [
   { id: "men", label: "Men", icon: ShirtIcon },
@@ -43,59 +47,96 @@ const brands = [
 ];
 const ShoppingHome = () => {
   const [bannerSlide, setBannerSlide] = useState(0);
-  const [openProductDetail, setOpenProductDetail] = useState(false)
+  const [openProductDetail, setOpenProductDetail] = useState(false);
   const slides = [bannerImgFirst, bannerImgSecond];
-  const { productList, productDetails } = useSelector((state) => state.shopProducts);
-  const {user} = useSelector((state) => state.auth);
+  const { productList, productDetails } = useSelector(
+    (state) => state.shopProducts
+  );
+  const { cartItems } = useSelector((state) => state.shopCart);
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
-    const timmer = setInterval(() => {
+    const timer = setInterval(() => {
       setBannerSlide((prev) => (prev + 1) % slides.length);
     }, 4000);
-    return () => clearInterval(timmer);
-  }, []);
+    return () => clearInterval(timer);
+  }, [slides.length]);
   useEffect(() => {
     dispatch(
       getAllFilterProduct({ filterParams: {}, sortParams: "price-lowtohigh" })
     );
   }, [dispatch]);
-  const handleNavigateToListingPage =(currentItem, section)=>{
-      sessionStorage.removeItem("filter")
-      const currentFilter ={
-        [section] : [currentItem.id]
+  const handleNavigateToListingPage = (currentItem, section) => {
+    sessionStorage.removeItem("filter");
+    const currentFilter = {
+      [section]: [currentItem.id],
+    };
+    sessionStorage.setItem("filter", JSON.stringify(currentFilter));
+    navigate("/shop/listing");
+  };
+
+  const handleGetProductDetails = (getCurrentProductId) => {
+    dispatch(getProductDetails(getCurrentProductId));
+    setOpenProductDetail(true);
+  };
+
+  const handleCartItem = (getCurrentProductId, totalStock) => {
+    let getCurrentCartItems = cartItems.items || [];
+    if (getCurrentCartItems.length) {
+      const indexOfCurrentItem = getCurrentCartItems.findIndex(
+        (item) => item.productId === getCurrentProductId
+      );
+      if (indexOfCurrentItem > -1) {
+        const getQuantity = getCurrentCartItems[indexOfCurrentItem].quantity;
+        if (totalStock < 5) {
+          if (getQuantity + 1 > totalStock) {
+            toast.error(
+              `Only ${getQuantity} quantity can be added for this moment`
+            );
+            return;
+          }
+        } else if (getQuantity + 1 > 5) {
+          toast.error("max 5 quantity can be added for same product");
+          return;
+        }
       }
-      sessionStorage.setItem("filter", JSON.stringify(currentFilter))
-      navigate("/shop/listing")
-  }
-  
-  const handleGetProductDetails =(getCurrentProductId)=>{
-    dispatch(getProductDetails(getCurrentProductId))
-    setOpenProductDetail(true)
-  }
-  
-  const handleCartItem =(getCurrentProductId)=>{
-      dispatch(addItemsToCart({userId : user._id , productId : getCurrentProductId, quantity : 1})).then(data=>{
-      if(data?.payload?.success){
-        toast.success(data.payload?.message)
-        setOpenProductDetail(false)
-        dispatch(getCartItems(user?._id))
-      }
+    }
+    dispatch(
+      addItemsToCart({
+        userId: user._id,
+        productId: getCurrentProductId,
+        quantity: 1,
       })
-     
-  }
+    ).then((data) => {
+      if (data?.payload?.success) {
+        toast.success(data.payload?.message);
+        setOpenProductDetail(false);
+        dispatch(getCartItems(user?._id));
+      }
+    });
+  };
   return (
     <div className="flex flex-col min-h-screen ">
       <div className="relative w-full h-[600px] overflow-hidden">
         {slides.map((slide, index) => (
-          <img
-            key={index}
-            src={slide}
-            className={`${
-              index === bannerSlide ? "opacity-100" : "opacity-0"
-            } absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000`}
-          />
+           <div key={index} className="absolute top-0 left-0 w-full h-full">
+           <img
+             src={slide}
+             loading="lazy"
+             className={`${
+               index === bannerSlide ? "opacity-100" : "opacity-0"
+             } w-full h-full object-cover transition-opacity duration-1000`}
+           />
+           
+           {index === bannerSlide && (
+             <div className="absolute inset-0 flex items-center justify-center">
+               <PuffLoader loading={index !== bannerSlide} />
+             </div>
+           )}
+         </div>
         ))}
+        
         <Button
           onClick={() =>
             setBannerSlide((prev) => (prev - 1 + slides.length) % slides.length)
@@ -122,8 +163,8 @@ const ShoppingHome = () => {
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {categores.map((item) => (
-              <Card 
-                onClick={()=>handleNavigateToListingPage(item, "category")}
+              <Card
+                onClick={() => handleNavigateToListingPage(item, "category")}
                 key={item.id}
                 className="cursor-pointer hover:shadow-lg transition-shadow"
               >
@@ -144,7 +185,7 @@ const ShoppingHome = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {brands.map((item) => (
               <Card
-              onClick={()=>handleNavigateToListingPage(item, "brand")}
+                onClick={() => handleNavigateToListingPage(item, "brand")}
                 key={item.id}
                 className="cursor-pointer hover:shadow-lg transition-shadow"
               >
@@ -168,13 +209,19 @@ const ShoppingHome = () => {
                   <ShoppingProductCard
                     key={productItem._id}
                     product={productItem}
-                    handleGetProductDetails={handleGetProductDetails} handleCartItem={handleCartItem}
+                    handleGetProductDetails={handleGetProductDetails}
+                    handleCartItem={handleCartItem}
                   />
                 ))
               : null}
           </div>
         </div>
-        <ProductDetails open={openProductDetail} setOpen={setOpenProductDetail} productDetails={productDetails} handleCartItem={handleCartItem} />
+        <ProductDetails
+          open={openProductDetail}
+          setOpen={setOpenProductDetail}
+          productDetails={productDetails}
+          handleCartItem={handleCartItem}
+        />
       </section>
     </div>
   );

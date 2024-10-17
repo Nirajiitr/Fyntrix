@@ -21,8 +21,8 @@ const AdminProductCard = ({ product, setCurrentEditedId, setOpenProductsDialog, 
         <CardContent>
             <h2 className="text-xl font-bold my-2">{product?.title}</h2>
             <div className="flex justify-between items-center mb-2">
-                <span className={`${product.salePrice>0 ? "line-through": ""} text-lg font-semibold text-primary`}>₨.{product?.price}</span>
-                <span className={`${product.salePrice>0 ? "block": "hidden"} text-lg font-bold`}>₨.{product?.salePrice}</span>
+                <span className={`${product.salePrice>0 ? "line-through": ""} text-lg font-semibold text-primary`}>${product?.price}</span>
+                <span className={`${product.salePrice>0 ? "block": "hidden"} text-lg font-bold`}>${product?.salePrice}</span>
             </div>
         </CardContent>
         <CardFooter className="flex justify-between">

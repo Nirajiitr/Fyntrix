@@ -2,13 +2,31 @@ import React from "react";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
+import { useNavigate } from "react-router-dom";
 
-const ShoppingProductCard = ({ product, handleGetProductDetails, handleCartItem }) => {
+const ShoppingProductCard = ({
+  product,
+  handleGetProductDetails,
+  handleCartItem,
+  location
+}) => {
+  const navigate = useNavigate();
+
+  const redirectIfDefault = (pageLocation, action) => {
+    if (pageLocation === "default") {
+      navigate("/auth/login");
+    } else {
+      action();
+    }
+  };
+
   return (
     <Card className="w-full max-w-sm mx-auto">
       <div
         className="cursor-pointer"
-        onClick={() => handleGetProductDetails(product?._id)}
+        onClick={() => 
+          redirectIfDefault(location, () => handleGetProductDetails(product?._id))
+        }
       >
         <div className="relative">
           <img
@@ -16,7 +34,15 @@ const ShoppingProductCard = ({ product, handleGetProductDetails, handleCartItem 
             alt={product?.title}
             className="w-full h-[300px] object-cover rounded-t-lg"
           />
-          {product.salePrice > 0 ? (
+          {product?.totalStock === 0 ? (
+            <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
+              Out of stock
+            </Badge>
+          ) : product.totalStock < 10 ? (
+            <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
+              {`Only ${product?.totalStock} items left`}
+            </Badge>
+          ) : product.salePrice > 0 ? (
             <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
               Sale
             </Badge>
@@ -38,20 +64,35 @@ const ShoppingProductCard = ({ product, handleGetProductDetails, handleCartItem 
                 product?.salePrice > 0 ? "line-through" : ""
               } text-lg font-semibold text-primary`}
             >
-              ₨.{product?.price}
+              ${product?.price}
             </span>
             <span
               className={`${
                 product?.salePrice > 0 ? "block" : "hidden"
               } text-lg font-bold`}
             >
-              ₨.{product?.salePrice}
+              ${product?.salePrice}
             </span>
           </div>
         </CardContent>
       </div>
       <CardFooter>
-        <Button onClick={()=>handleCartItem(product?._id)} className="w-full">Add to cart</Button>
+        {product?.totalStock === 0 ? (
+          <Button className="w-full cursor-not-allowed opacity-40">
+            Out of stock
+          </Button>
+        ) : (
+          <Button
+            onClick={() =>
+              redirectIfDefault(location, () =>
+                handleCartItem(product?._id, product.totalStock)
+              )
+            }
+            className="w-full"
+          >
+            Add to cart
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

@@ -30,7 +30,7 @@ const CartWrapper = ({ cartItems ,setOpenCart}) => {
       </div>
       <div className="mt-8 space-y-4">
         <span className="font-bold">Total</span>
-        <span className="font-bold ml-2">₨.{totalPrice}</span>
+        <span className="font-bold ml-2">${totalPrice}</span>
       </div>
       <Button onClick={()=>{navigate("/shop/checkout"); setOpenCart(false)}} className="w-full mt-6">Checkout</Button>
     </SheetContent>

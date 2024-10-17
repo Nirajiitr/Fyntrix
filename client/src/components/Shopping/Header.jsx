@@ -1,6 +1,18 @@
-import { HomeIcon, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
+import {
+  HomeIcon,
+  LogOut,
+  Menu,
+  SearchIcon,
+  ShoppingCart,
+  UserCog,
+} from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,29 +29,60 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { logoutUser } from "@/store/auth-slice";
 import CartWrapper from "./CartWrapper";
 import { getCartItems } from "@/store/shop/cart-slice";
+import { Input } from "../ui/input";
+import brandLogo from "../../assets/logo.png";
 
-const ShoppingHeader = () => {
+const redirectIfDefault = (pageLocation, navigate, action) => {
+  if (pageLocation === "default") {
+    navigate("/auth/login");
+  } else {
+    action();
+  }
+};
+
+const ShoppingHeader = ({ pageLocation }) => {
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
   const [openCart, setOpenCart] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchText, setSearchText] = useState("");
+
+  const handleSearch = () => {
+    redirectIfDefault(pageLocation, navigate, () => {
+      if (searchText !== "") {
+        navigate(`/shop/search?q=${searchText}`);
+      }
+    });
+  };
 
   useEffect(() => {
-    dispatch(getCartItems(user?._id));
-  }, [dispatch]);
+    if (user?._id) {
+      dispatch(getCartItems(user._id)).catch((err) => {
+        console.error("Failed to load cart items", err);
+      });
+    }
+  }, [dispatch, user]);
 
   const handleNavigatNavbar = (getCurrentMemuItem) => {
-    sessionStorage.removeItem("filter");
-    const currentFilter =
-      getCurrentMemuItem.id !== "home"
-        ? {
-            category: [getCurrentMemuItem.id],
-          }
-        : null;
+    redirectIfDefault(pageLocation, navigate, () => {
+      sessionStorage.removeItem("filter");
+      const currentFilter =
+        getCurrentMemuItem.id !== "home" && getCurrentMemuItem.id !== "products"
+          ? {
+              category: [getCurrentMemuItem.id],
+            }
+          : null;
 
-        sessionStorage.setItem("filter", JSON.stringify(currentFilter))
-        navigate(getCurrentMemuItem.path)
+      sessionStorage.setItem("filter", JSON.stringify(currentFilter));
+      location.pathname.includes("listing") && currentFilter !== null
+        ? setSearchParams(
+            new URLSearchParams(`?category=${getCurrentMemuItem.id}`)
+          )
+        : navigate(getCurrentMemuItem.path);
+    });
   };
 
   const MenuItem = () => {
@@ -60,17 +103,28 @@ const ShoppingHeader = () => {
 
   const HearderRight = () => {
     return (
-      <div className="flex items-center gap-4 justify-between">
-        <Sheet open={openCart} onOpenChange={() => setOpenCart(false)}>
+      <div className="flex items-center gap-2 sm:gap-4 justify-between">
+        <Sheet
+          open={openCart}
+          onOpenChange={() => {
+            redirectIfDefault(pageLocation, navigate, () => setOpenCart(false));
+          }}
+        >
           <Button
-            onClick={() => setOpenCart(true)}
+            onClick={() => {
+              redirectIfDefault(pageLocation, navigate, () =>
+                setOpenCart(true)
+              );
+            }}
             variant="outline"
             size="icon"
+            className="h-7 w-7 sm:size-10"
           >
-            <ShoppingCart className="size-6" />
+            <ShoppingCart className="size-4 sm:size-6" />
             <span className="sr-only">User cart</span>
           </Button>
-          <CartWrapper setOpenCart={setOpenCart}
+          <CartWrapper
+            setOpenCart={setOpenCart}
             cartItems={
               cartItems && cartItems.items && cartItems.items.length > 0
                 ? cartItems.items
@@ -80,31 +134,35 @@ const ShoppingHeader = () => {
         </Sheet>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar className="bg-black">
+            <Avatar className="bg-black h-7 w-7 sm:size-10">
               <AvatarFallback className="bg-black text-white font-extrabold cursor-pointer">
-                {user.fullname[0].toUpperCase()}
+                {user?.fullname[0].toUpperCase() || (
+                  <img src={brandLogo} alt="brand logo" />
+                )}
               </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="right" className="w-56">
-            <DropdownMenuLabel>{user.fullname}</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => navigate("/shop/account")}
-              className="cursor-pointer"
-            >
-              <UserCog className="mr-2 size-4" />
-              Account
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => dispatch(logoutUser())}
-              className="cursor-pointer"
-            >
-              <LogOut className="mr-2 size-4" />
-              Logout
-            </DropdownMenuItem>
-          </DropdownMenuContent>
+          {pageLocation !== "default" && (
+            <DropdownMenuContent side="bottom" className="w-56">
+              <DropdownMenuLabel>{user?.fullname}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => navigate("/shop/account")}
+                className="cursor-pointer"
+              >
+                <UserCog className="mr-2 size-4" />
+                Account
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => dispatch(logoutUser())}
+                className="cursor-pointer"
+              >
+                <LogOut className="mr-2 size-4" />
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          ) }
         </DropdownMenu>
       </div>
     );
@@ -112,16 +170,36 @@ const ShoppingHeader = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
-      <div className="flex h-16 items-center justify-between px-4 md:px-6 ">
-        <Link to="/shop/home" className="flex items-center gap-2">
-          <HomeIcon className="size-6" />
+      <div className="flex sm:h-16 h-12 items-center justify-between px-1 sm:px-4 md:px-6 gap-2 ">
+        <Link to="/shop/home" className="flex min-w-fit items-center gap-2">
+          <HomeIcon className="size-4 sm:size-6" />
           <span className="font-bold">E-Fyntrix</span>
         </Link>
+        <div className="w-full inline-block">
+          <div className="relative w-full max-w-sm">
+            <Input
+              onChange={(e) => setSearchText(e.target.value)}
+              value={searchText}
+              className="h-7 sm:h-10 pr-7 sm:pr-10"
+            />
+            <SearchIcon
+              onClick={handleSearch}
+              className="absolute size-4 sm:size-6 cursor-pointer right-2 top-[20%]"
+            />
+          </div>
+        </div>
+        <div className="lg:hidden">
+          <HearderRight />
+        </div>
         <Sheet>
           <SheetTrigger asChild>
             <SheetTitle>
-              <Button variant="outline" size="icon" className="lg:hidden">
-                <Menu className="size-6" />
+              <Button
+                variant="outline"
+                size="icon"
+                className="lg:hidden h-7 w-7 sm:size-10"
+              >
+                <Menu className="size-4 sm:size-6" />
                 <span className="sr-only">Toggle header menu</span>
               </Button>
             </SheetTitle>
@@ -129,7 +207,6 @@ const ShoppingHeader = () => {
 
           <SheetContent side="left" className="w-full max-w-xs">
             <MenuItem />
-            <HearderRight />
           </SheetContent>
         </Sheet>
         <div className="hidden lg:block">
