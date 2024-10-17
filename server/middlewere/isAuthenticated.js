@@ -4,6 +4,7 @@ export const isAuthenticated = (req, res, next) => {
   try {
     const authHeader  = req.headers["authorization"]
     const Token = authHeader && authHeader.split(" ")[1]
+   
     if (!Token) {
       return res.status(401).json({ message: "user not authenticated" });
     }

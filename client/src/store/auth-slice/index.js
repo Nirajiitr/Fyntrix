@@ -108,7 +108,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isAuthenticated = action.payload.success;
         state.user = action.payload.userData;
-        sessionStorage.setItem("Token", JSON.stringify(action.payload.Token));
+        localStorage.setItem("Token", JSON.stringify(action.payload.Token));
         toast.success(action.payload.message || "Login successful");
       })
       .addCase(loginUser.rejected, (state, action) => {
