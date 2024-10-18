@@ -44,14 +44,7 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
-export const logoutUser = createAsyncThunk("/auth/logout", async () => {
-  const response = await axios.post(
-    `${import.meta.env.VITE_SERVER_BASE_URL}/api/auth/logout`,{},
 
-    { withCredentials: true }
-  );
-  return response.data;
-});
 export const checkAuth = createAsyncThunk(
   "/auth/checkauth",
   async (Token, { rejectWithValue }) => {
@@ -117,15 +110,7 @@ const authSlice = createSlice({
         state.user = null;
         toast.error(action?.payload?.message || "login failed");
       })
-      .addCase(logoutUser.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(logoutUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isAuthenticated = action.payload.success;
-        state.user = null;
-      })
-
+     
       .addCase(checkAuth.pending, (state) => {
         state.isLoading = true;
       })

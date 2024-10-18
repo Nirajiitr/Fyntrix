@@ -26,11 +26,11 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { logoutUser } from "@/store/auth-slice";
 import CartWrapper from "./CartWrapper";
 import { getCartItems } from "@/store/shop/cart-slice";
 import { Input } from "../ui/input";
 import brandLogo from "../../assets/logo.png";
+import toast from "react-hot-toast";
 
 const redirectIfDefault = (pageLocation, navigate, action) => {
   if (pageLocation === "default") {
@@ -84,7 +84,11 @@ const ShoppingHeader = ({ pageLocation }) => {
         : navigate(getCurrentMemuItem.path);
     });
   };
-
+  const handleLogout = ()=>{
+    localStorage.removeItem("Token")
+    navigate("/auth/login")
+    toast.success("logout successfully")
+  }
   const MenuItem = () => {
     return (
       <nav className="flex flex-col mb-3 lg:items-center gap-6 lg:flex-row">
@@ -155,7 +159,7 @@ const ShoppingHeader = ({ pageLocation }) => {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={() => dispatch(logoutUser())}
+                onClick={handleLogout}
                 className="cursor-pointer"
               >
                 <LogOut className="mr-2 size-4" />
