@@ -62,26 +62,27 @@ const login = async (req, res) => {
     }
 
     const Token = jwt.sign(
-      { _id: isUser._id, fullname: isUser.fullname, email: isUser.email, role: isUser.role },
+      {
+        _id: isUser._id,
+        fullname: isUser.fullname,
+        email: isUser.email,
+        role: isUser.role,
+      },
       process.env.JWT_SECRET_KEY,
       { expiresIn: "1d" }
     );
 
     const { password: _, ...userData } = isUser._doc;
-    res
-      
-      .json({
-        userData,
-        message: "login successfully",
-        success: true,
-        Token 
-      });
+    res.json({
+      userData,
+      message: "login successfully",
+      success: true,
+      Token,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "internal server error" });
   }
 };
-
-
 
 export { register, login };

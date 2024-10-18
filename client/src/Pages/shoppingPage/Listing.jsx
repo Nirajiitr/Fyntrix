@@ -92,21 +92,24 @@ const ShoppingListing = () => {
   };
 
   const handleCartItem = (getCurrentProductId, totalStock) => {
-    let getCurrentCartItems = cartItems.items || []
-    if(getCurrentCartItems.length){
-      const indexOfCurrentItem = getCurrentCartItems.findIndex(item=>item.productId === getCurrentProductId)
-      if(indexOfCurrentItem > -1){
-        const getQuantity= getCurrentCartItems[indexOfCurrentItem].quantity;
-        if(totalStock<5){
-        if(getQuantity+1>totalStock){
-            toast.error(`Only ${getQuantity} quantity can be added for this moment`)
+    let getCurrentCartItems = cartItems.items || [];
+    if (getCurrentCartItems.length) {
+      const indexOfCurrentItem = getCurrentCartItems.findIndex(
+        (item) => item.productId === getCurrentProductId
+      );
+      if (indexOfCurrentItem > -1) {
+        const getQuantity = getCurrentCartItems[indexOfCurrentItem].quantity;
+        if (totalStock < 5) {
+          if (getQuantity + 1 > totalStock) {
+            toast.error(
+              `Only ${getQuantity} quantity can be added for this moment`
+            );
             return;
+          }
+        } else if (getQuantity + 1 > 5) {
+          toast.error("max 5 quantity can be added for same product");
+          return;
         }
-      }else if(getQuantity+1>5) {
-        toast.error("max 5 quantity can be added for same product")
-        return;
-      }
-
       }
     }
     dispatch(
@@ -159,7 +162,7 @@ const ShoppingListing = () => {
             </DropdownMenu>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2  xl:grid-cols-3  gap-4 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 max-w-full max-h-[75vh] overflow-hidden no-scrollbar overflow-y-scroll xl:grid-cols-3  gap-4 p-4">
           {productList && productList.length > 0
             ? productList.map((product) => (
                 <ShoppingProductCard

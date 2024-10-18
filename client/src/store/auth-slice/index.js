@@ -54,11 +54,10 @@ export const checkAuth = createAsyncThunk(
         {
           withCredentials: true,
           headers: {
-            Authorization : `Bearer ${Token}`,
+            Authorization: `Bearer ${Token}`,
             "Cache-control":
               "no-store, no-cache, must-revalidate, proxy-revalidate",
           },
-          
         }
       );
       return response.data;
@@ -110,7 +109,7 @@ const authSlice = createSlice({
         state.user = null;
         toast.error(action?.payload?.message || "login failed");
       })
-     
+
       .addCase(checkAuth.pending, (state) => {
         state.isLoading = true;
       })
@@ -119,7 +118,7 @@ const authSlice = createSlice({
         state.isAuthenticated = action.payload.success;
         state.user = action.payload.userData;
       })
-      .addCase(checkAuth.rejected, (state, action) => {
+      .addCase(checkAuth.rejected, (state) => {
         state.isLoading = false;
         state.isAuthenticated = false;
         state.user = null;

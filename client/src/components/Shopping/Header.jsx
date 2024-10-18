@@ -84,11 +84,11 @@ const ShoppingHeader = ({ pageLocation }) => {
         : navigate(getCurrentMemuItem.path);
     });
   };
-  const handleLogout = ()=>{
-    localStorage.removeItem("Token")
-    navigate("/auth/login")
-    toast.success("logout successfully")
-  }
+  const handleLogout = () => {
+    localStorage.removeItem("Token");
+    navigate("/auth/login");
+    toast.success("logout successfully");
+  };
   const MenuItem = () => {
     return (
       <nav className="flex flex-col mb-3 lg:items-center gap-6 lg:flex-row">
@@ -122,10 +122,13 @@ const ShoppingHeader = ({ pageLocation }) => {
             }}
             variant="outline"
             size="icon"
-            className="h-7 w-7 sm:size-10"
+            className="h-7 w-7 sm:size-10 relative"
           >
             <ShoppingCart className="size-4 sm:size-6" />
             <span className="sr-only">User cart</span>
+            <span className="absolute -top-4 -right-1 p-1 text-red-500 bg-white rounded-full">
+              {cartItems?.items?.length}
+            </span>
           </Button>
           <CartWrapper
             setOpenCart={setOpenCart}
@@ -166,7 +169,7 @@ const ShoppingHeader = ({ pageLocation }) => {
                 Logout
               </DropdownMenuItem>
             </DropdownMenuContent>
-          ) }
+          )}
         </DropdownMenu>
       </div>
     );

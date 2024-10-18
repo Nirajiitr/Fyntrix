@@ -8,7 +8,6 @@ import AdminDashbord from "./Pages/adminPage/Dashbord";
 import AdminProducts from "./Pages/adminPage/Products";
 import AdminOrders from "./Pages/adminPage/Orders";
 import AdminFeatures from "./Pages/adminPage/Features";
-import NotFoundPage from "./Pages/NotFoundPage";
 import ShoppingAccount from "./Pages/shoppingPage/Account";
 import ShoppingCheckout from "./Pages/shoppingPage/Checkout";
 import ShoppingHome from "./Pages/shoppingPage/Home";
@@ -23,11 +22,13 @@ import PaymentProcess from "./Pages/shoppingPage/PaymentProcess";
 import SearchResults from "./Pages/shoppingPage/SearchResults";
 import DefaultPage from "./Pages/DefaultPage";
 import { PuffLoader } from "react-spinners";
+import PageNotFound from "./Pages/NotFoundPage";
 
 const App = () => {
   const dispatch = useDispatch();
   const [authChecked, setAuthChecked] = useState(false);
-  const Token = localStorage.getItem("Token") && JSON.parse(localStorage.getItem("Token"))
+  const Token =
+    localStorage.getItem("Token") && JSON.parse(localStorage.getItem("Token"));
   const { isAuthenticated, user, isLoading } = useSelector(
     (state) => state.auth
   );
@@ -51,7 +52,7 @@ const App = () => {
     );
   }
   return (
-    <div className="flex flex-col overflow-hidden bg-white">
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-white">
       <Routes>
         <Route
           path="auth"
@@ -94,9 +95,10 @@ const App = () => {
           <Route path="payment/cancel" element={<Failure />} />
         </Route>
         <Route path="/payment/process" element={<PaymentProcess />} />
-        <Route path="*" element={<NotFoundPage />} />
+
         <Route path="/shop/search" element={<SearchResults />} />
         <Route path="/" element={<DefaultPage />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
   );

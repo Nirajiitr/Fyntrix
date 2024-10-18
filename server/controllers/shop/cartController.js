@@ -25,7 +25,7 @@ const addItemsToCart = async (req, res) => {
     const findCurrentProductIndex = cart.items.findIndex(
       (item) => item.productId.toString() === productId
     );
-   
+
     if (findCurrentProductIndex === -1) {
       cart.items.push({ productId, quantity });
     } else {
@@ -112,7 +112,7 @@ const updateCartItems = async (req, res) => {
     const findCurrentProductIndex = cart.items.findIndex(
       (item) => item.productId.toString() === productId
     );
-    
+
     if (findCurrentProductIndex === -1) {
       return res.status(404).json({
         success: false,
@@ -190,7 +190,6 @@ const deleteCartItems = async (req, res) => {
       data: {
         ...cart._doc,
         items: populateCartItems,
-        
       },
     });
   } catch (error) {

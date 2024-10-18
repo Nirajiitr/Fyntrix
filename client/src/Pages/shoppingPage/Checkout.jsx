@@ -6,13 +6,14 @@ import CartContent from "@/components/Shopping/CartContent";
 import { Button } from "@/components/ui/button";
 import { createOrder } from "@/store/shop/order-slice";
 import toast from "react-hot-toast";
+import { PuffLoader } from "react-spinners";
 const ShoppingCheckout = () => {
   const { cartItems } = useSelector((state) => state.shopCart);
   const { approvalURl } = useSelector((state) => state.shopOrder);
   const { user } = useSelector((state) => state.auth);
-  const [selectAddress, setSelectedAddress] = useState(null);
-  const [paymentInitiate, setPaymentInitiate]= useState(false)
-  const dispatch = useDispatch()
+  const { selectedAddress } = useSelector((state) => state.shopAddress);
+  const [paymentInitiate, setPaymentInitiate] = useState(false);
+  const dispatch = useDispatch();
   const totalPrice =
     cartItems && cartItems?.items?.length > 0
       ? cartItems?.items?.reduce(
@@ -27,12 +28,12 @@ const ShoppingCheckout = () => {
       : 0;
 
   const handleChechOut = () => {
-    if(selectAddress===null){
-      return toast.error("Please select one address to proceed.")
+    if (selectedAddress === null) {
+      return toast.error("Please select one address to proceed.");
     }
     const orderData = {
       userId: user?._id,
-      cardId : cartItems?._id,
+      cardId: cartItems?._id,
       cartItems: cartItems?.items?.map((singleItem) => ({
         productId: singleItem?.productId,
         title: singleItem?.title,
@@ -42,12 +43,12 @@ const ShoppingCheckout = () => {
         quantity: singleItem?.quantity,
       })),
       addressInfo: {
-        addressId: selectAddress?._id,
-        address: selectAddress?.address,
-        city: selectAddress?.city,
-        pincode: selectAddress?.pincode ,
-        phone:selectAddress?.phone,
-        notes: selectAddress?.notes,
+        addressId: selectedAddress?._id,
+        address: selectedAddress?.address,
+        city: selectedAddress?.city,
+        pincode: selectedAddress?.pincode,
+        phone: selectedAddress?.phone,
+        notes: selectedAddress?.notes,
       },
       orderStatus: "pending",
       paymentStatus: "unpaid",
@@ -55,16 +56,24 @@ const ShoppingCheckout = () => {
       orderDate: new Date(),
       userEmail: user?.email,
     };
-   dispatch(createOrder(orderData)).then(data=>{
-     if(data?.payload?.success){
-      setPaymentInitiate(true)
-     }else{
-      setPaymentInitiate(false)
-     }
-   })
+    dispatch(createOrder(orderData)).then((data) => {
+      if (data?.payload?.success) {
+        setPaymentInitiate(true);
+      } else {
+        setPaymentInitiate(false);
+      }
+    });
   };
-  if(approvalURl){
+  if (approvalURl) {
     window.location.href = approvalURl;
+  }
+  if (paymentInitiate) {
+    return (
+      <div className="w-screen h-screen flex flex-col gap-4 items-center justify-center">
+        <PuffLoader color="#3671d6" size="40px" />
+        <p>processing with card...</p>
+      </div>
+    );
   }
   return (
     <div className="flex flex-col">
@@ -76,7 +85,7 @@ const ShoppingCheckout = () => {
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5 p-5">
-        <ShoppingAddress setSelectedAddress={setSelectedAddress} />
+        <ShoppingAddress />
         <div className="flex flex-col gap-4">
           {cartItems && cartItems?.items?.length > 0
             ? cartItems?.items.map((item) => (
@@ -88,8 +97,11 @@ const ShoppingCheckout = () => {
             <span className="font-bold ">${totalPrice}</span>
           </div>
           <div className="mt-4 w-full">
-            <Button disabled = {!(cartItems?.items?.length>0)} onClick={handleChechOut} className="w-full">
-             
+            <Button
+              disabled={!(cartItems?.items?.length > 0)}
+              onClick={handleChechOut}
+              className="w-full"
+            >
               Checkout with card
             </Button>
           </div>

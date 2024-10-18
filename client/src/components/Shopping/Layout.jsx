@@ -4,7 +4,7 @@ import ShoppingHeader from "./Header";
 
 const ShoppingLayout = () => {
   return (
-    <div className="flex flex-col bg-white overflow-hidden">
+    <div className="flex flex-col no-scrollbar w-full h-full bg-white overflow-hidden overflow-y-scroll">
       <ShoppingHeader />
       <main className=" flex flex-col w-full">
         <Outlet />

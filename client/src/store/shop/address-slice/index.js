@@ -5,6 +5,9 @@ import toast from "react-hot-toast";
 const initialState = {
   isLoading: false,
   addressList: [],
+  selectedAddress: sessionStorage.getItem("selectedAddress")
+    ? JSON.parse(sessionStorage.getItem("selectedAddress"))
+    : null,
 };
 
 export const addAddress = createAsyncThunk(
@@ -41,13 +44,12 @@ export const getAllAdress = createAsyncThunk(
 export const updateAddress = createAsyncThunk(
   "/address/updateAddress",
   async ({ userId, addressId, formData }, { rejectWithValue }) => {
-    
     try {
       const result = await axios.put(
         `${
           import.meta.env.VITE_SERVER_BASE_URL
         }/api/shop/address/update-address/${userId}/${addressId}`,
-        {formData}
+        { formData }
       );
       return result?.data;
     } catch (error) {
@@ -73,7 +75,12 @@ export const deleteAddress = createAsyncThunk(
 const ShopAddressSlice = createSlice({
   name: "shopAddress",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedAddress: (state, action) => {
+      state.selectedAddress = action.payload;
+      sessionStorage.setItem("selectedAddress", JSON.stringify(action.payload));
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(addAddress.pending, (state) => {
@@ -98,13 +105,12 @@ const ShopAddressSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(updateAddress.fulfilled, (state) => {
-        (state.isLoading = false)
+        state.isLoading = false;
       })
       .addCase(updateAddress.rejected, (state, action) => {
         (state.isLoading = false), toast.error(action?.payload?.message);
       });
-     
   },
 });
-
+export const { setSelectedAddress } = ShopAddressSlice.actions;
 export default ShopAddressSlice.reducer;

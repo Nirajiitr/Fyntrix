@@ -13,7 +13,9 @@ const SearchResults = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
-  const { searchProductList } = useSelector((state) => state.shopSearch);
+  const { searchProductList, isLoading } = useSelector(
+    (state) => state.shopSearch
+  );
   const { cartItems } = useSelector((state) => state.shopCart);
   const { user } = useSelector((state) => state.auth);
   const { productDetails } = useSelector((state) => state.shopProducts);
@@ -69,7 +71,13 @@ const SearchResults = () => {
       dispatch(getSearchProducts({ keyword: query }));
     }
   }, [location.search, dispatch]);
-
+  if (isLoading) {
+    return (
+      <div className="w-screen h-screen flex items-center justify-center">
+        <PuffLoader color="#3671d6" size="40px" />
+      </div>
+    );
+  }
   return (
     <>
       <div className="flex flex-col bg-white overflow-hidden">

@@ -9,12 +9,10 @@ const handleImageUpload = async (req, res) => {
     res.status(200).json({ success: true, result });
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Server error occurred while uploading image",
-      });
+    res.status(500).json({
+      success: false,
+      message: "Server error occurred while uploading image",
+    });
   }
 };
 
@@ -30,8 +28,19 @@ const setProduct = async (req, res) => {
       salePrice,
       totalStock,
     } = req.body;
-    if(!image || !title || !description || !category || !brand || !price || !salePrice || !totalStock){
-      return res.status(400).json({success: false, message: "all field are required"})
+    if (
+      !image ||
+      !title ||
+      !description ||
+      !category ||
+      !brand ||
+      !price ||
+      !salePrice ||
+      !totalStock
+    ) {
+      return res
+        .status(400)
+        .json({ success: false, message: "all field are required" });
     }
     const newProduct = new Product({
       image,

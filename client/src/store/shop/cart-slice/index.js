@@ -8,12 +8,10 @@ const initialState = {
 
 export const addItemsToCart = createAsyncThunk(
   "/cart/addItemsToCart",
-  async ({ userId, productId, quantity } ) => {
-   
+  async ({ userId, productId, quantity }) => {
     const result = await axios.post(
-      `${
-        import.meta.env.VITE_SERVER_BASE_URL
-      }/api/shop/cart/add-card`, {userId, productId, quantity}
+      `${import.meta.env.VITE_SERVER_BASE_URL}/api/shop/cart/add-card`,
+      { userId, productId, quantity }
     );
     return result?.data;
   }
@@ -31,18 +29,17 @@ export const getCartItems = createAsyncThunk(
 );
 export const updateCartItems = createAsyncThunk(
   "/cart/updateCartItems",
-  async ({userId, productId, quantity}) => {
+  async ({ userId, productId, quantity }) => {
     const result = await axios.put(
-      `${
-        import.meta.env.VITE_SERVER_BASE_URL
-      }/api/shop/cart/update-card`, {userId, productId, quantity}
+      `${import.meta.env.VITE_SERVER_BASE_URL}/api/shop/cart/update-card`,
+      { userId, productId, quantity }
     );
     return result?.data;
   }
 );
 export const deleteCartItems = createAsyncThunk(
   "/cart/deleteCartItems",
-  async ({userId, productId}) => {
+  async ({ userId, productId }) => {
     const result = await axios.delete(
       `${
         import.meta.env.VITE_SERVER_BASE_URL

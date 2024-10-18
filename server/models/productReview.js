@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 
 const productReviewSchema = new mongoose.Schema(
@@ -8,7 +7,6 @@ const productReviewSchema = new mongoose.Schema(
     userName: String,
     reviewMessage: String,
     reviewValue: Number,
-    
   },
   {
     timestamps: true,

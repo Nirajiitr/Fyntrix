@@ -39,11 +39,15 @@ const addReview = async (req, res) => {
       reviewValue,
     });
     await newReview.save();
-     const reviews = await Review.find({productId})
-     
+    const reviews = await Review.find({ productId });
+
     res
       .status(201)
-      .json({ success: true, data: newReview, message: "thank you for your review!" });
+      .json({
+        success: true,
+        data: newReview,
+        message: "thank you for your review!",
+      });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -61,17 +65,17 @@ const getReview = async (req, res) => {
         message: "productId required!",
       });
     }
-    const reviews = await Review.find({ productId })
+    const reviews = await Review.find({ productId });
     if (!reviews) {
       return res.status(404).json({
         success: false,
         message: "review not found!",
       });
     }
-    
+
     res.status(200).json({
       success: true,
-      data: reviews
+      data: reviews,
     });
   } catch (error) {
     console.log(error);

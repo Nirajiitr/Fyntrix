@@ -1,15 +1,27 @@
 import { ChartBar } from "lucide-react";
 import React, { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
-import { BadgeCheck, LayoutDashboard, ShoppingBasket } from "lucide-react";
-import { SheetContent, SheetHeader, SheetTitle, Sheet} from "../ui/sheet";
 
-export const adminSidebarMenuItems = [
+import { SheetContent, SheetHeader, SheetTitle, Sheet } from "../ui/sheet";
+import {
+  BadgeCheck,
+  LayoutDashboard,
+  ShoppingBasket,
+  Star,
+} from "lucide-react";
+
+const adminSidebarMenuItems = [
   {
     id: "dashbord",
     label: "Dashbord",
     path: "/admin/dashbord",
     icons: <LayoutDashboard />,
+  },
+  {
+    id: "features",
+    label: "Features",
+    path: "/admin/features",
+    icons: <Star />,
   },
   {
     id: "products",
@@ -42,7 +54,7 @@ const MenuItems = () => {
   );
 };
 
-const AdminSidebar = ({open, setOpen}) => {
+const AdminSidebar = ({ open, setOpen }) => {
   const navigate = useNavigate();
   return (
     <Fragment>

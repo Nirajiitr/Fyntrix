@@ -9,21 +9,22 @@ const initialState = {
 
 export const addReview = createAsyncThunk(
   "/review/addReview",
-  async ({ userId, userName, productId, reviewMessage, reviewValue }, {rejectWithValue}) => {
+  async (
+    { userId, userName, productId, reviewMessage, reviewValue },
+    { rejectWithValue }
+  ) => {
     try {
       const result = await axios.post(
         `${import.meta.env.VITE_SERVER_BASE_URL}/api/shop/review/add-review?`,
         { userId, userName, productId, reviewMessage, reviewValue }
       );
       return result?.data;
-      
     } catch (error) {
       if (error.response && error.response.data) {
         return rejectWithValue(error.response.data);
       }
       return rejectWithValue({ message: "Something went wrong" });
     }
-   
   }
 );
 export const getReviews = createAsyncThunk(
@@ -49,7 +50,7 @@ const ShopReviewSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(addReview.fulfilled, (state) => {
-        (state.isLoading = false);
+        state.isLoading = false;
       })
       .addCase(addReview.rejected, (state, action) => {
         (state.isLoading = false), toast.error(action?.payload?.message);

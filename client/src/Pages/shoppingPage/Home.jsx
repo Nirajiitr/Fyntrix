@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import bannerImgFirst from "../../assets/home-slide-1.webp";
 import bannerImgSecond from "../../assets/home-slide-2.jpeg";
-import { Button } from "@/components/ui/button";
-import {
-  BabyIcon,
-  ChevronLeft,
-  ChevronRight,
-  CloudLightning,
-  DramaIcon,
-  Drum,
-  Grid3x3,
-  LoaderPinwheel,
-  Origami,
-  ShirtIcon,
-  Target,
-  UmbrellaIcon,
-  WatchIcon,
-} from "lucide-react";
+import BagIcon from "../../assets/bag-svgrepo-com.svg";
+import BabyIcon from "../../assets/baby-svgrepo-com.svg";
+import DressIcon from "../../assets/dress-svgrepo-com.svg";
+import ShirtIcon from "../../assets/shirt-and-tie-svgrepo-com.svg";
+import ShoeIcon from "../../assets/shoe-classy-svgrepo-com.svg";
+import GildanIcon from "../../assets/SVGBrand.com_gildan.svg";
+import HugoBossIcon from "../../assets/SVGBrand.com_hugo_boss.svg";
+import JomaIcon from "../../assets/SVGBrand.com_joma.svg";
+import LuxotticaIcon from "../../assets/SVGBrand.com_luxottica.svg";
+import LyleAndScottIcon from "../../assets/SVGBrand.com_lyle_26_scott.svg";
+import NewBalanceIcon from "../../assets/SVGBrand.com_new_balance.svg";
+import ReebokIcon from "../../assets/SVGBrand.com_reebok.svg";
+import SalvatoreFerragamoIcon from "../../assets/SVGBrand.com_salvatore_ferragamo_spa.svg";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -28,134 +26,90 @@ import { useNavigate } from "react-router-dom";
 import { addItemsToCart, getCartItems } from "@/store/shop/cart-slice";
 import ProductDetails from "@/components/Shopping/ProductDetails";
 import toast from "react-hot-toast";
-import { PuffLoader } from "react-spinners";
+import BannerSlider from "@/components/Shopping/BannerSlider";
 
 const categores = [
   { id: "men", label: "Men", icon: ShirtIcon },
-  { id: "women", label: "Women", icon: CloudLightning },
+  { id: "women", label: "Women", icon: DressIcon },
   { id: "kids", label: "Kids", icon: BabyIcon },
-  { id: "accessories", label: "Accessories", icon: WatchIcon },
-  { id: "footwear", label: "Footwear", icon: UmbrellaIcon },
+  { id: "accessories", label: "Accessories", icon: BagIcon },
+  { id: "footwear", label: "Footwear", icon: ShoeIcon },
 ];
 const brands = [
-  { id: "nike", label: "Nike", icon: Grid3x3 },
-  { id: "adidas", label: "Adidas", icon: LoaderPinwheel },
-  { id: "puma", label: "Puma", icon: DramaIcon },
-  { id: "levi", label: "Levi's", icon: Origami },
-  { id: "zara", label: "Zara", icon: Drum },
-  { id: "h&m", label: "H&M", icon: Target },
+  { id: "reebok", label: "Reebok", icon: ReebokIcon },
+  { id: "new_balance", label: "New Balance", icon: NewBalanceIcon },
+  { id: "hugo_boss", label: "Hugo Boss", icon: HugoBossIcon },
+  { id: "luxottica", label: "Luxottica", icon: LuxotticaIcon },
+  { id: "gildan", label: "Gildan", icon: GildanIcon },
+  { id: "salvage", label: "Salvage", icon: SalvatoreFerragamoIcon },
+  { id: "lyle_and_scott", label: "Lyle & Scott", icon: LyleAndScottIcon },
+  { id: "joma", label: "Joma", icon: JomaIcon },
 ];
+
+
 const ShoppingHome = () => {
-  const [bannerSlide, setBannerSlide] = useState(0);
   const [openProductDetail, setOpenProductDetail] = useState(false);
   const slides = [bannerImgFirst, bannerImgSecond];
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
-  const { cartItems } = useSelector((state) => state.shopCart);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setBannerSlide((prev) => (prev + 1) % slides.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, [slides.length]);
+
   useEffect(() => {
     dispatch(
       getAllFilterProduct({ filterParams: {}, sortParams: "price-lowtohigh" })
     );
   }, [dispatch]);
-  const handleNavigateToListingPage = (currentItem, section) => {
-    sessionStorage.removeItem("filter");
-    const currentFilter = {
-      [section]: [currentItem.id],
-    };
-    sessionStorage.setItem("filter", JSON.stringify(currentFilter));
-    navigate("/shop/listing");
-  };
 
-  const handleGetProductDetails = (getCurrentProductId) => {
-    dispatch(getProductDetails(getCurrentProductId));
-    setOpenProductDetail(true);
-  };
-
-  const handleCartItem = (getCurrentProductId, totalStock) => {
-    let getCurrentCartItems = cartItems.items || [];
-    if (getCurrentCartItems.length) {
-      const indexOfCurrentItem = getCurrentCartItems.findIndex(
-        (item) => item.productId === getCurrentProductId
+  const handleNavigateToListingPage = useCallback(
+    (currentItem, section) => {
+      sessionStorage.removeItem("filter");
+      sessionStorage.setItem(
+        "filter",
+        JSON.stringify({ [section]: [currentItem.id] })
       );
-      if (indexOfCurrentItem > -1) {
-        const getQuantity = getCurrentCartItems[indexOfCurrentItem].quantity;
-        if (totalStock < 5) {
-          if (getQuantity + 1 > totalStock) {
-            toast.error(
-              `Only ${getQuantity} quantity can be added for this moment`
-            );
-            return;
+      navigate("/shop/listing");
+    },
+    [navigate]
+  );
+
+  const handleGetProductDetails = useCallback(
+    (getCurrentProductId) => {
+      dispatch(getProductDetails(getCurrentProductId));
+      setOpenProductDetail(true);
+    },
+    [dispatch]
+  );
+
+  const handleCartItem = useCallback(
+    (getCurrentProductId) => {
+      dispatch(
+        addItemsToCart({
+          userId: user._id,
+          productId: getCurrentProductId,
+          quantity: 1,
+        })
+      )
+        .then((data) => {
+          if (data?.payload?.success) {
+            toast.success(data.payload.message);
+            setOpenProductDetail(false);
+            dispatch(getCartItems(user._id));
           }
-        } else if (getQuantity + 1 > 5) {
-          toast.error("max 5 quantity can be added for same product");
-          return;
-        }
-      }
-    }
-    dispatch(
-      addItemsToCart({
-        userId: user._id,
-        productId: getCurrentProductId,
-        quantity: 1,
-      })
-    ).then((data) => {
-      if (data?.payload?.success) {
-        toast.success(data.payload?.message);
-        setOpenProductDetail(false);
-        dispatch(getCartItems(user?._id));
-      }
-    });
-  };
+        })
+        .catch(() => {
+          toast.error("Failed to add item to cart.");
+        });
+    },
+    [dispatch, user._id]
+  );
+
   return (
-    <div className="flex flex-col min-h-screen ">
-      <div className="relative w-full h-[600px] overflow-hidden">
-        {slides.map((slide, index) => (
-           <div key={index} className="absolute top-0 left-0 w-full h-full">
-           <img
-             src={slide}
-             loading="lazy"
-             className={`${
-               index === bannerSlide ? "opacity-100" : "opacity-0"
-             } w-full h-full object-cover transition-opacity duration-1000`}
-           />
-           
-           {index === bannerSlide && (
-             <div className="absolute inset-0 flex items-center justify-center">
-               <PuffLoader loading={index !== bannerSlide} />
-             </div>
-           )}
-         </div>
-        ))}
-        
-        <Button
-          onClick={() =>
-            setBannerSlide((prev) => (prev - 1 + slides.length) % slides.length)
-          }
-          variant="outline"
-          size="icon"
-          className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/80 "
-        >
-          <ChevronLeft className="size-8" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => setBannerSlide((prev) => (prev + 1) % slides.length)}
-          className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/80 "
-        >
-          <ChevronRight className="size-8" />
-        </Button>
-      </div>
+    <div className="flex flex-col min-h-screen">
+      <BannerSlider slides={slides} />
+
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8 ">
@@ -169,7 +123,8 @@ const ShoppingHome = () => {
                 className="cursor-pointer hover:shadow-lg transition-shadow"
               >
                 <CardContent className="flex flex-col items-center justify-center p-6">
-                  <item.icon className="size-12 mb-4 text-primary" />
+                 
+                  <img src={item.icon} alt={item.label} className="size-20 mb-4 text-primary" />
                   <span className="font-bold">{item.label}</span>
                 </CardContent>
               </Card>
@@ -177,6 +132,7 @@ const ShoppingHome = () => {
           </div>
         </div>
       </section>
+
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8 ">
@@ -190,7 +146,7 @@ const ShoppingHome = () => {
                 className="cursor-pointer hover:shadow-lg transition-shadow"
               >
                 <CardContent className="flex flex-col items-center justify-center p-6">
-                  <item.icon className="size-12 mb-4 text-primary" />
+                <img src={item.icon} alt={item.label} className="size-20 mb-4 text-primary" />
                   <span className="font-bold">{item.label}</span>
                 </CardContent>
               </Card>
@@ -198,6 +154,7 @@ const ShoppingHome = () => {
           </div>
         </div>
       </section>
+
       <section className="py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8 ">

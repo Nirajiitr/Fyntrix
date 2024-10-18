@@ -12,7 +12,11 @@ import { Button } from "../ui/button";
 import ShoppingOrderDetails from "./OrderDetails";
 import { Dialog } from "../ui/dialog";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllBougthProduct, getOrderDetails, resetOrderDetails } from "@/store/shop/order-slice";
+import {
+  getAllBougthProduct,
+  getOrderDetails,
+  resetOrderDetails,
+} from "@/store/shop/order-slice";
 import { Badge } from "../ui/badge";
 import { DialogTitle } from "@radix-ui/react-dialog";
 
@@ -21,7 +25,7 @@ const ShoppingOrders = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { orderList, orderDetails } = useSelector((state) => state.shopOrder);
- 
+
   const handleViewDetails = (orderId) => {
     dispatch(getOrderDetails(orderId));
   };
@@ -60,18 +64,18 @@ const ShoppingOrders = () => {
                       <Badge
                         className={`${
                           orderItem?.orderStatus === "pending"
-                          ? "bg-red-500"
-                          : orderItem?.orderStatus === "rejected"
-                          ? "bg-red-500"
-                          : orderItem?.orderStatus === "inProcess"
-                          ? "bg-yellow-500"
-                          : orderItem?.orderStatus === "delivered"
-                          ? "bg-green-500"
-                          : orderItem?.orderStatus === "confirm"
-                          ? "bg-green-500"
-                          : orderItem?.orderStatus === "inShipping"
-                          ? "bg-yellow-500"
-                          : ""
+                            ? "bg-red-500"
+                            : orderItem?.orderStatus === "rejected"
+                            ? "bg-red-500"
+                            : orderItem?.orderStatus === "inProcess"
+                            ? "bg-yellow-500"
+                            : orderItem?.orderStatus === "delivered"
+                            ? "bg-green-500"
+                            : orderItem?.orderStatus === "confirm"
+                            ? "bg-green-500"
+                            : orderItem?.orderStatus === "inShipping"
+                            ? "bg-yellow-500"
+                            : ""
                         } px-2 py-1`}
                       >
                         {orderItem?.orderStatus}
@@ -79,10 +83,13 @@ const ShoppingOrders = () => {
                     </TableCell>
                     <TableCell>${orderItem?.totalAmount}</TableCell>
                     <TableCell>
-                      <Dialog open={openDetails} onOpenChange={()=>{
-                        setOpenDetails(false)
-                          dispatch(resetOrderDetails())
-                      }}>
+                      <Dialog
+                        open={openDetails}
+                        onOpenChange={() => {
+                          setOpenDetails(false);
+                          dispatch(resetOrderDetails());
+                        }}
+                      >
                         <DialogTitle className="sr-only">
                           order details
                         </DialogTitle>
@@ -91,7 +98,7 @@ const ShoppingOrders = () => {
                         >
                           View Details
                         </Button>
-                        <ShoppingOrderDetails orderDetails= {orderDetails} />
+                        <ShoppingOrderDetails orderDetails={orderDetails} />
                       </Dialog>
                     </TableCell>
                   </TableRow>

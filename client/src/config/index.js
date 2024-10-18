@@ -1,5 +1,3 @@
-
-
 export const registerFormControls = [
   {
     name: "fullname",
@@ -31,7 +29,6 @@ export const registerFormControls = [
   },
 ];
 export const loginFormControls = [
-  
   {
     name: "email",
     label: "Email",
@@ -46,7 +43,6 @@ export const loginFormControls = [
     componentType: "input",
     type: "password",
   },
-  
 ];
 
 export const addProductFormElements = [
@@ -80,81 +76,83 @@ export const addProductFormElements = [
     name: "brand",
     componentType: "select",
     options: [
-      { id: "nike", label: "Nike" },
-      { id: "adidas", label: "Adidas" },
-      { id: "puma", label: "Puma" },
-      { id: "levi", label: "Levi's" },
-      { id: "zara", label: "Zara" },
-      { id: "h&m", label: "H&M" },
+      { id: "reebok", label: "Reebok" },
+      { id: "new_balance", label: "New Balance" },
+      { id: "hugo_boss", label: "Hugo Boss" },
+      { id: "luxottica", label: "Luxottica" },
+      { id: "gildan", label: "Gildan" },
+      { id: "salvatore_ferragamo", label: "Salvatore Ferragamo" },
+      { id: "lyle_and_scott", label: "Lyle & Scott" },
+      { id: "joma", label: "Joma" },
     ],
   },
   {
     label: "Price",
     name: "price",
-    componentType : "input",
-    type:"number",
-    placeholder : "Enter product price"
+    componentType: "input",
+    type: "number",
+    placeholder: "Enter product price",
   },
   {
     label: "Sale Price",
     name: "salePrice",
-    componentType : "input",
-    type:"number",
-    placeholder : "Enter product price (optional)"
+    componentType: "input",
+    type: "number",
+    placeholder: "Enter product price (optional)",
   },
   {
     label: "Total Stock",
     name: "totalStock",
-    componentType : "input",
-    type:"number",
-    placeholder : "Enter totle stock"
-  }
+    componentType: "input",
+    type: "number",
+    placeholder: "Enter totle stock",
+  },
 ];
 
 export const shoppingHeaderMenuItems = [
   {
-    id  : "home",
-    label : "Home",
-    path : "/shop/home"
+    id: "home",
+    label: "Home",
+    path: "/shop/home",
   },
   {
-    id  : "products",
-    label : "Products",
-    path : "/shop/listing"
+    id: "products",
+    label: "Products",
+    path: "/shop/listing",
   },
   {
-    id  : "men",
-    label : "Men",
-    path : "/shop/listing"
+    id: "men",
+    label: "Men",
+    path: "/shop/listing",
   },
   {
-    id  : "women",
-    label : "Women",
-    path : "/shop/listing"
+    id: "women",
+    label: "Women",
+    path: "/shop/listing",
   },
   {
-    id  : "kids",
-    label : "Kids",
-    path : "/shop/listing"
+    id: "kids",
+    label: "Kids",
+    path: "/shop/listing",
   },
   {
-    id  : "footwear",
-    label : "Footwear",
-    path : "/shop/listing"
+    id: "footwear",
+    label: "Footwear",
+    path: "/shop/listing",
   },
   {
-    id  : "accessories",
-    label : "Accessories",
-    path : "/shop/listing"
-  }
-]
- export const filterOptions = {
+    id: "accessories",
+    label: "Accessories",
+    path: "/shop/listing",
+  },
+];
+export const filterOptions = {
   category: [
     { id: "men", label: "Men" },
     { id: "women", label: "Women" },
     { id: "kids", label: "Kids" },
     { id: "accessories", label: "Accessories" },
-    { id: "footwear", label: "Footwear" }
+    { id: "footwear", label: "Footwear" },
   ],
   brand: [
     { id: "nike", label: "Nike" },
@@ -162,8 +160,8 @@ export const shoppingHeaderMenuItems = [
     { id: "puma", label: "Puma" },
     { id: "levi", label: "Levi's" },
     { id: "zara", label: "Zara" },
-    { id: "h&m", label: "H&M" }
-  ]
+    { id: "h&m", label: "H&M" },
+  ],
 };
 
 export const sortOptions = [

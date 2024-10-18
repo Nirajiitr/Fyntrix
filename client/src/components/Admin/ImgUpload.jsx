@@ -5,7 +5,7 @@ import { FileIcon, UploadCloudIcon, XIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ImgUpload = ({
   imgFile,
@@ -14,7 +14,7 @@ const ImgUpload = ({
   setUploadedImgUrl,
   setImgLoading,
   imgLoading,
-  isEditing
+  isEditing,
 }) => {
   const inputRef = useRef(null);
   const handleImgChange = (e) => {
@@ -68,19 +68,20 @@ const ImgUpload = ({
           className="hidden"
           ref={inputRef}
           onChange={handleImgChange}
-          disabled = {isEditing}
+          disabled={isEditing}
         />
         {!imgFile ? (
           <label
             htmlFor="imgUpload"
-            className={`${isEditing ? "cursor-not-allowed opacity-20" : "cursor-pointer"} flex flex-col items-center justify-center h-32  `}
+            className={`${
+              isEditing ? "cursor-not-allowed opacity-20" : "cursor-pointer"
+            } flex flex-col items-center justify-center h-32  `}
           >
             <UploadCloudIcon className="w-10 h10 text-muted-foreground mb-2" />
             <span>Drag & Drop or Click to upload image</span>
           </label>
         ) : imgLoading ? (
           <Skeleton className=" h-10 bg-gray-200" />
-
         ) : (
           <div className="flex items-center justify-between">
             <div className="flex items-center">

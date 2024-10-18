@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 const Success = () => {
   const navigate = useNavigate();
-  
+
   return (
     <div className="flex items-center justify-center h-screen bg-green-50">
       <div className="max-w-md p-6 bg-white shadow-md rounded-lg text-center">
@@ -10,7 +10,8 @@ const Success = () => {
           Payment Successful!
         </h1>
         <p className="text-lg text-gray-700 mb-6">
-          Thank you for your purchase. Your payment has been processed successfully.
+          Thank you for your purchase. Your payment has been processed
+          successfully.
         </p>
         <div className="flex justify-center">
           <button

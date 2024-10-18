@@ -1,23 +1,20 @@
 import jwt from "jsonwebtoken";
 export const isAuthenticated = (req, res, next) => {
- 
   try {
-    const authHeader  = req.headers["authorization"]
-    const Token = authHeader && authHeader.split(" ")[1]
-   
+    const authHeader = req.headers["authorization"];
+    const Token = authHeader && authHeader.split(" ")[1];
+
     if (!Token) {
       return res.status(401).json({ message: "user not authenticated" });
     }
-    
+
     jwt.verify(Token, process.env.JWT_SECRET_KEY, (err, decode) => {
       if (err) {
         if (err.name === "TokenExpiredError") {
-          return res
-            .status(401)
-            .json({
-              success: false,
-              message: "Session is Expired! login again.",
-            });
+          return res.status(401).json({
+            success: false,
+            message: "Session is Expired! login again.",
+          });
         } else if (err.name === "JsonWebTokenError") {
           return res
             .status(401)
@@ -32,7 +29,7 @@ export const isAuthenticated = (req, res, next) => {
         _id: decode._id,
         fullname: decode.fullname,
         email: decode.email,
-        role: decode.role
+        role: decode.role,
       };
 
       next();

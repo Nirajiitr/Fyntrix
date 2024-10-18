@@ -8,8 +8,7 @@ const initialState = {
 
 export const getSearchProducts = createAsyncThunk(
   "/search/getSearchProducts",
-  async ({keyword}) => {
-   
+  async ({ keyword }) => {
     const result = await axios.post(
       `${
         import.meta.env.VITE_SERVER_BASE_URL
@@ -18,7 +17,6 @@ export const getSearchProducts = createAsyncThunk(
     return result?.data;
   }
 );
-
 
 const ShopSearchSlice = createSlice({
   name: "shopSearch",
@@ -30,12 +28,12 @@ const ShopSearchSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getSearchProducts.fulfilled, (state, action) => {
-        (state.isLoading = false), (state.searchProductList = action.payload.data);
+        (state.isLoading = false),
+          (state.searchProductList = action.payload.data);
       })
       .addCase(getSearchProducts.rejected, (state) => {
         (state.isLoading = false), (state.searchProductList = []);
       });
-     
   },
 });
 

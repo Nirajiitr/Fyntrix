@@ -78,10 +78,10 @@ const AdminProductsSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(addNewProduct.fulfilled, (state) => {
-        (state.isLoading = false)
+        state.isLoading = false;
       })
       .addCase(addNewProduct.rejected, (state, action) => {
-        (state.isLoading = false)
+        state.isLoading = false;
         toast.error(action?.payload?.message);
       })
       .addCase(getAllProduct.pending, (state) => {

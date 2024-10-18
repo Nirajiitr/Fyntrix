@@ -12,7 +12,7 @@ import {
 import toast from "react-hot-toast";
 import AddressCard from "./AddressCard";
 
-const ShoppingAddress = ({setSelectedAddress}) => {
+const ShoppingAddress = () => {
   const [formData, setFormData] = useState({
     address: "",
     city: "",
@@ -29,10 +29,10 @@ const ShoppingAddress = ({setSelectedAddress}) => {
   }, [dispatch]);
   const handleAddress = (e) => {
     e.preventDefault();
-    if(addressList.length>=3 && currenteditedId === null){
-      return toast.error("You can add max 3 addresses")
+    if (addressList.length >= 3 && currenteditedId === null) {
+      return toast.error("You can add max 3 addresses");
     }
-     if(currenteditedId !==null){
+    if (currenteditedId !== null) {
       dispatch(
         updateAddress({
           userId: user?._id,
@@ -42,7 +42,7 @@ const ShoppingAddress = ({setSelectedAddress}) => {
       ).then((data) => {
         if (data?.payload?.success) {
           toast.success(data.payload?.message);
-          setCurrentEditedId(null)
+          setCurrentEditedId(null);
           dispatch(getAllAdress(user?._id));
           setFormData({
             address: "",
@@ -53,7 +53,7 @@ const ShoppingAddress = ({setSelectedAddress}) => {
           });
         }
       });
-     }else{
+    } else {
       dispatch(addAddress({ ...formData, userId: user?._id })).then((data) => {
         if (data?.payload?.success) {
           toast.success(data.payload?.message);
@@ -67,9 +67,7 @@ const ShoppingAddress = ({setSelectedAddress}) => {
           });
         }
       });
-     }
-
-   
+    }
   };
   const handleDeleteAddress = (getCurrentAddres) => {
     dispatch(
@@ -91,7 +89,6 @@ const ShoppingAddress = ({setSelectedAddress}) => {
       phone: getCurrentAddres?.phone,
       notes: getCurrentAddres?.notes,
     });
-   
   };
   return (
     <Card>
@@ -103,20 +100,21 @@ const ShoppingAddress = ({setSelectedAddress}) => {
                 addressInfo={addressInfo}
                 handleDeleteAddress={handleDeleteAddress}
                 handleEditAddress={handleEditAddress}
-                setSelectedAddress = {setSelectedAddress}
               />
             ))
           : null}
       </div>
       <CardHeader>
-        <CardTitle>{currenteditedId !==null ?   "Edit Address" : "Add new Address"}</CardTitle>
+        <CardTitle>
+          {currenteditedId !== null ? "Edit Address" : "Add new Address"}
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         <CommonForm
           formControls={addressFormControls}
           formData={formData}
           setFormData={setFormData}
-          buttonText={currenteditedId !==null ?   "Edit" : "Add"}
+          buttonText={currenteditedId !== null ? "Edit" : "Add"}
           onSubmit={handleAddress}
         />
       </CardContent>

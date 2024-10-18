@@ -3,12 +3,14 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { useNavigate } from "react-router-dom";
+import { PuffLoader } from "react-spinners";
+import { useSelector } from "react-redux";
 
 const ShoppingProductCard = ({
   product,
   handleGetProductDetails,
   handleCartItem,
-  location
+  location,
 }) => {
   const navigate = useNavigate();
 
@@ -19,21 +21,29 @@ const ShoppingProductCard = ({
       action();
     }
   };
-
+  const { isLoading } = useSelector((state) => state.shopProducts);
   return (
     <Card className="w-full max-w-sm mx-auto">
       <div
         className="cursor-pointer"
-        onClick={() => 
-          redirectIfDefault(location, () => handleGetProductDetails(product?._id))
+        onClick={() =>
+          redirectIfDefault(location, () =>
+            handleGetProductDetails(product?._id)
+          )
         }
       >
         <div className="relative">
           <img
+            loading="lazy"
             src={product?.image}
             alt={product?.title}
             className="w-full h-[300px] object-cover rounded-t-lg"
           />
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <PuffLoader color="#3671d6" size="40px" />
+            </div>
+          )}
           {product?.totalStock === 0 ? (
             <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
               Out of stock

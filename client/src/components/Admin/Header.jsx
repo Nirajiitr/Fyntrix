@@ -5,10 +5,10 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const AdminHeader = ({ setOpenSidebar }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("Token");
-    navigate("/auth/login")
+    navigate("/auth/login");
     toast.success(data.payload.message || "logout successfully");
   };
   return (

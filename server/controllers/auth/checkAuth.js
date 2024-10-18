@@ -1,7 +1,7 @@
 export const checkAuth = (req, res) => {
   try {
     const userData = req.user;
-    
+
     if (!userData) {
       return res
         .status(401)

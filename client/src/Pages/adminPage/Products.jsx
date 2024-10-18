@@ -88,7 +88,7 @@ const AdminProducts = () => {
           Add new Product
         </Button>
       </div>
-      <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4 h-full  overflow-hidden overflow-y-scroll">
         {productList && productList.length > 0
           ? productList.map((product) => (
               <AdminProductCard

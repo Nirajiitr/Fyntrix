@@ -13,24 +13,28 @@ const AdminOrderDetails = ({ orderDetails, setOpenDetails }) => {
   };
   const [formData, setFormData] = useState(initialFormData);
   const { user } = useSelector((state) => state.auth);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const handleUpdateStatus = (e) => {
-     e.preventDefault()
-     dispatch(updateOrderStatus({orderId: orderDetails?._id, orderStatus: formData.status})).then(data=>{
-      if(data?.payload?.success){
-      setFormData(initialFormData)
-     setOpenDetails(false)
-     dispatch(getAllOrder())
-     toast.success(data?.payload?.message)
+    e.preventDefault();
+    dispatch(
+      updateOrderStatus({
+        orderId: orderDetails?._id,
+        orderStatus: formData.status,
+      })
+    ).then((data) => {
+      if (data?.payload?.success) {
+        setFormData(initialFormData);
+        setOpenDetails(false);
+        dispatch(getAllOrder());
+        toast.success(data?.payload?.message);
       }
-     })
-    
+    });
   };
   return (
     <DialogContent className="sm:max-w-[600px]">
       <div className="grid gap-6">
         <div className="grid gap-2">
-        <div className="flex items-center justify-between mt-6">
+          <div className="flex items-center justify-between mt-6">
             <p className="font-medium">Order ID</p>
             <Label>{orderDetails?._id}</Label>
           </div>
@@ -51,7 +55,7 @@ const AdminOrderDetails = ({ orderDetails, setOpenDetails }) => {
             <div className="grid gap-2">
               <div className="font-medium">Order Details</div>
               <div className="grid gap-3">
-              {orderDetails?.cartItems && orderDetails.cartItems?.length > 0
+                {orderDetails?.cartItems && orderDetails.cartItems?.length > 0
                   ? orderDetails.cartItems.map((item) => (
                       <li className="flex items-center justify-between">
                         <span>Title: {item?.title}</span>
@@ -67,7 +71,7 @@ const AdminOrderDetails = ({ orderDetails, setOpenDetails }) => {
             <div className="grid gap-2">
               <div className="font-medium">Shipping Info</div>
               <div className="grid gap-0.5 text-muted-foreground">
-              <span>{user.fullname}</span>
+                <span>{user.fullname}</span>
                 <span>Address: {orderDetails?.addressInfo?.address}</span>
                 <span>City: {orderDetails?.addressInfo?.city}</span>
                 <span>Pincode: {orderDetails?.addressInfo?.pincode}</span>
