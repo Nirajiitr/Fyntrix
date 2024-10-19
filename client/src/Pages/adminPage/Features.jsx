@@ -2,7 +2,7 @@ import React from "react";
 
 const AdminFeatures = () => {
   return (
-    <div className="p-8 bg-gray-100 h-full no-scrollbar overflow-hidden">
+    <div className="p-8 bg-gray-100 h-full no-scrollbar overflow-y-scroll no-scrollbar overflow-hidden">
       <h1 className="text-3xl font-bold mb-6">Admin Features</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="bg-white p-6 shadow-md rounded-lg">

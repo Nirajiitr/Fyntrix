@@ -9,13 +9,19 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { sortOptions } from "@/config/index.js";
 import { addItemsToCart, getCartItems } from "@/store/shop/cart-slice";
 import {
   getAllFilterProduct,
   getProductDetails,
 } from "@/store/shop/product-slice";
-import { ArrowUpDownIcon } from "lucide-react";
+import { ArrowUpDownIcon, Filter } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -127,15 +133,36 @@ const ShoppingListing = () => {
     });
   };
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
-      <ShoppingFilter filters={filters} handleFilter={handleFilter} />
+    <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-6 p-2 md:p-6 ">
+      <div className="hidden lg:inline-block">
+        <ShoppingFilter filters={filters} handleFilter={handleFilter} />
+      </div>
+
       <div className="bg-background w-full rounded-lg shadow-sm">
         <div className="p-4 border-b flex items-center justify-between ">
-          <h2 className="text-lg font-extrabold">All Products</h2>
+          <div className="flex gap-2 items-center">
+            <Sheet>
+              <SheetTrigger asChild>
+                <SheetTitle>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="lg:hidden h-7 w-7 sm:size-10"
+                  >
+                    <Filter size="16px" />
+                    <span className="sr-only">filter button</span>
+                  </Button>
+                </SheetTitle>
+              </SheetTrigger>
+
+              <SheetContent side="left" className="w-full max-w-max">
+                <ShoppingFilter filters={filters} handleFilter={handleFilter} />
+              </SheetContent>
+            </Sheet>
+
+            <h2 className="text-lg font-extrabold">All Products</h2>
+          </div>
           <div className="flex items-center gap-3">
-            <span className="text-muted-foreground">
-              {productList.length} products
-            </span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -163,16 +190,20 @@ const ShoppingListing = () => {
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 max-w-full max-h-[75vh] overflow-hidden no-scrollbar overflow-y-scroll xl:grid-cols-3  gap-4 p-4">
-          {productList && productList.length > 0
-            ? productList.map((product) => (
-                <ShoppingProductCard
-                  key={product._id}
-                  product={product}
-                  handleGetProductDetails={handleGetProductDetails}
-                  handleCartItem={handleCartItem}
-                />
-              ))
-            : null}
+          {productList && productList.length > 0 ? (
+            productList.map((product) => (
+              <ShoppingProductCard
+                key={product._id}
+                product={product}
+                handleGetProductDetails={handleGetProductDetails}
+                handleCartItem={handleCartItem}
+              />
+            ))
+          ) : (
+            <span className="text-muted-foreground">
+              {productList.length} products
+            </span>
+          )}
         </div>
       </div>
       <ProductDetails

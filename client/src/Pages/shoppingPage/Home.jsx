@@ -1,6 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import bannerImgFirst from "../../assets/home-slide-1.webp";
-import bannerImgSecond from "../../assets/home-slide-2.jpeg";
 import BagIcon from "../../assets/bag-svgrepo-com.svg";
 import BabyIcon from "../../assets/baby-svgrepo-com.svg";
 import DressIcon from "../../assets/dress-svgrepo-com.svg";
@@ -26,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 import { addItemsToCart, getCartItems } from "@/store/shop/cart-slice";
 import ProductDetails from "@/components/Shopping/ProductDetails";
 import toast from "react-hot-toast";
-import BannerSlider from "@/components/Shopping/BannerSlider";
+
 
 const categores = [
   { id: "men", label: "Men", icon: ShirtIcon },
@@ -49,7 +47,7 @@ const brands = [
 
 const ShoppingHome = () => {
   const [openProductDetail, setOpenProductDetail] = useState(false);
-  const slides = [bannerImgFirst, bannerImgSecond];
+
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
@@ -107,8 +105,8 @@ const ShoppingHome = () => {
   );
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <BannerSlider slides={slides} />
+    <div className="flex w-full flex-col h-full  overflow-hidden overflow-y-scroll">
+      
 
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">

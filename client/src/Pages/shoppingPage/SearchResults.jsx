@@ -8,6 +8,7 @@ import { getProductDetails } from "@/store/shop/product-slice";
 import { addItemsToCart, getCartItems } from "@/store/shop/cart-slice";
 import toast from "react-hot-toast";
 import ProductDetails from "@/components/Shopping/ProductDetails";
+import { PuffLoader } from "react-spinners";
 
 const SearchResults = () => {
   const location = useLocation();
@@ -79,36 +80,31 @@ const SearchResults = () => {
     );
   }
   return (
-    <>
-      <div className="flex flex-col bg-white overflow-hidden">
-        <ShoppingHeader />
-      </div>
-      <div className="container mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold mb-8">
-          Search Results for "{searchQuery}"
-        </h1>
-        {searchProductList && searchProductList.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {searchProductList.map((product) => (
-              <ShoppingProductCard
-                key={product._id}
-                product={product}
-                handleGetProductDetails={handleGetProductDetails}
-                handleCartItem={handleCartItem}
-              />
-            ))}
-          </div>
-        ) : (
-          <p>No products found for "{searchQuery}".</p>
-        )}
-        <ProductDetails
-          open={openProductDetail}
-          setOpen={setOpenProductDetail}
-          productDetails={productDetails}
-          handleCartItem={handleCartItem}
-        />
-      </div>
-    </>
+    <div className="container mx-auto px-4 py-12 ">
+      <h1 className="text-3xl font-bold mb-8">
+        Search Results for "{searchQuery}"
+      </h1>
+      {searchProductList && searchProductList.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6  max-w-full max-h-[75vh] overflow-hidden no-scrollbar overflow-y-scroll">
+          {searchProductList.map((product) => (
+            <ShoppingProductCard
+              key={product._id}
+              product={product}
+              handleGetProductDetails={handleGetProductDetails}
+              handleCartItem={handleCartItem}
+            />
+          ))}
+        </div>
+      ) : (
+        <p>No products found for "{searchQuery}".</p>
+      )}
+      <ProductDetails
+        open={openProductDetail}
+        setOpen={setOpenProductDetail}
+        productDetails={productDetails}
+        handleCartItem={handleCartItem}
+      />
+    </div>
   );
 };
 

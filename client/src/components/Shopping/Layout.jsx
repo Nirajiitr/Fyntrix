@@ -4,9 +4,9 @@ import ShoppingHeader from "./Header";
 
 const ShoppingLayout = () => {
   return (
-    <div className="flex flex-col no-scrollbar w-full h-full bg-white overflow-hidden overflow-y-scroll">
+    <div className="flex flex-col w-full h-full bg-white ">
       <ShoppingHeader />
-      <main className=" flex flex-col w-full">
+      <main className=" flex flex-col w-full h-full">
         <Outlet />
       </main>
     </div>

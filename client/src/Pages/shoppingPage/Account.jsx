@@ -6,7 +6,7 @@ import ShoppingOrders from "@/components/Shopping/Orders";
 
 const ShoppingAccount = () => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col overflow-y-scroll">
       <div className="relative h-[300px] w-full overflow-hidden">
         <img
           className="h-full w-full object-cover object-center"

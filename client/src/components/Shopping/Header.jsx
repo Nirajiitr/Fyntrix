@@ -176,10 +176,10 @@ const ShoppingHeader = ({ pageLocation }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background">
+    <header className=" w-full border-b bg-background">
       <div className="flex sm:h-16 h-12 items-center justify-between px-1 sm:px-4 md:px-6 gap-2 ">
         <Link to="/shop/home" className="flex min-w-fit items-center gap-2">
-          <HomeIcon className="size-4 sm:size-6" />
+          
           <span className="font-bold">E-Fyntrix</span>
         </Link>
         <div className="w-full inline-block">
@@ -212,7 +212,7 @@ const ShoppingHeader = ({ pageLocation }) => {
             </SheetTitle>
           </SheetTrigger>
 
-          <SheetContent side="left" className="w-full max-w-xs">
+          <SheetContent side="left" className="w-full max-w-max">
             <MenuItem />
           </SheetContent>
         </Sheet>

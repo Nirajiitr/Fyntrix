@@ -77,21 +77,25 @@ const ShoppingCheckout = () => {
   }
   return (
     <div className="flex flex-col">
-      <div className="relative h-[300px] w-full overflow-hidden">
+      <div className="relative h-[300px] w-full overflow-hidden hidden sm:block">
         <img
           className="h-full w-full object-cover object-center"
           src={accountImg}
           alt=" banner image"
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5 p-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 p-5">
+        <div className="overflow-y-auto h-56 lg:h-96">
         <ShoppingAddress />
+        </div>
         <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 overflow-y-auto h-40 lg:h-52">
           {cartItems && cartItems?.items?.length > 0
             ? cartItems?.items.map((item) => (
                 <CartContent key={item?.productId} cartItem={item} />
               ))
             : null}
+          </div>
           <div className="mt-8 rounded shadow p-2 flex items-start justify-between">
             <span className="font-bold">Total</span>
             <span className="font-bold ">${totalPrice}</span>

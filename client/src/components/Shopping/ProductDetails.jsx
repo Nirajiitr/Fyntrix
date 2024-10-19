@@ -59,7 +59,7 @@ const ProductDetails = ({ open, setOpen, productDetails, handleCartItem }) => {
       <DialogTitle>
         <span className="sr-only">product details dailog</span>
       </DialogTitle>
-      <DialogContent className="grid grid-cols-1 sm:grid-cols-2 overflow-hidden overflow-y-scroll sm:max-w-[70vw] w-screen  h-screen gap-8 sm:p-12  ">
+      <DialogContent className="grid grid-cols-1 sm:grid-cols-2 overflow-hidden overflow-y-scroll sm:max-w-[70vw] w-screen  h-screen gap-8 p-12  ">
         <div className="relative  rounded-lg">
           <img
             loading="lazy"
@@ -99,7 +99,7 @@ const ProductDetails = ({ open, setOpen, productDetails, handleCartItem }) => {
             </span>
           </div>
           <div className="flex items-center gap-2 mt-2">
-            <div className="flex items-center gap-0.5">
+            <div className="flex items-center gap-2">
               {retingScale.map((star) => (
                 <Button
                   variant="outline"
@@ -159,7 +159,7 @@ const ProductDetails = ({ open, setOpen, productDetails, handleCartItem }) => {
                       <div className="flex items-center gap-2">
                         <h3>{reviewItem?.userName}</h3>
                       </div>
-                      <div className="flex items-center gap-0.5">
+                      <div className="flex items-center gap-2">
                         {retingScale.map((star) => (
                           <Button
                             variant="outline"

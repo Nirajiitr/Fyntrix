@@ -90,13 +90,13 @@ const App = () => {
           <Route path="checkout" element={<ShoppingCheckout />} />
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
-
+          <Route path="/shop/search" element={<SearchResults />} />
           <Route path="payment/success" element={<Success />} />
           <Route path="payment/cancel" element={<Failure />} />
         </Route>
         <Route path="/payment/process" element={<PaymentProcess />} />
 
-        <Route path="/shop/search" element={<SearchResults />} />
+       
         <Route path="/" element={<DefaultPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

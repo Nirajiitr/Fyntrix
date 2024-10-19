@@ -19,11 +19,11 @@ const CartWrapper = ({ cartItems, setOpenCart }) => {
         )
       : 0;
   return (
-    <SheetContent className="sm:max-w-md">
+    <SheetContent className="sm:max-w-md ">
       <SheetHeader>
         <SheetTitle>Your Cart</SheetTitle>
       </SheetHeader>
-      <div className="mt-8 space-y-4">
+      <div className="mt-8 space-y-4 overflow-y-scroll h-1/2">
         {cartItems && cartItems.length > 0
           ? cartItems.map((item) => (
               <CartContent key={item?.productId} cartItem={item} />
