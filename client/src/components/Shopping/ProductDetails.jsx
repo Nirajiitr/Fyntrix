@@ -59,7 +59,8 @@ const ProductDetails = ({ open, setOpen, productDetails, handleCartItem }) => {
       <DialogTitle>
         <span className="sr-only">product details dailog</span>
       </DialogTitle>
-      <DialogContent className="grid grid-cols-1 sm:grid-cols-2 overflow-hidden overflow-y-scroll sm:max-w-[70vw] w-screen  h-screen gap-8 p-12  ">
+      <DialogContent className="flex items-center justify-center w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw]  h-[70vh]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 overflow-hidden overflow-y-scroll h-full w-full  gap-8 sm:p-12 items-center  ">
         <div className="relative  rounded-lg">
           <img
             loading="lazy"
@@ -216,6 +217,7 @@ const ProductDetails = ({ open, setOpen, productDetails, handleCartItem }) => {
               <Button onClick={handleAddReview}>Submit</Button>
             </div>
           </div>
+        </div>
         </div>
       </DialogContent>
     </Dialog>

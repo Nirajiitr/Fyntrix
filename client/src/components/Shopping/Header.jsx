@@ -179,7 +179,6 @@ const ShoppingHeader = ({ pageLocation }) => {
     <header className=" w-full border-b bg-background">
       <div className="flex sm:h-16 h-12 items-center justify-between px-1 sm:px-4 md:px-6 gap-2 ">
         <Link to="/shop/home" className="flex min-w-fit items-center gap-2">
-          
           <span className="font-bold">E-Fyntrix</span>
         </Link>
         <div className="w-full inline-block">
@@ -188,6 +187,7 @@ const ShoppingHeader = ({ pageLocation }) => {
               onChange={(e) => setSearchText(e.target.value)}
               value={searchText}
               className="h-7 sm:h-10 pr-7 sm:pr-10"
+              onKeyDown={(e)=>{e.key==="Enter" && handleSearch()}}
             />
             <SearchIcon
               onClick={handleSearch}
