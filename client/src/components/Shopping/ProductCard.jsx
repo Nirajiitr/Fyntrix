@@ -33,17 +33,18 @@ const ShoppingProductCard = ({
         }
       >
         <div className="relative">
-          <img
-            loading="lazy"
-            src={product?.image}
-            alt={product?.title}
-            className="w-full h-[300px] object-cover rounded-t-lg"
-          />
-          {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center">
+          
+          {isLoading ? (
+            <div className="w-full h-[300px] rounded-t-lg flex items-center justify-center">
               <PuffLoader color="#3671d6" size="40px" />
             </div>
-          )}
+
+          ) : <img
+          loading="lazy"
+          src={product?.image}
+          alt={product?.title}
+          className="w-full h-[300px] object-cover rounded-t-lg"
+        /> }
           {product?.totalStock === 0 ? (
             <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600">
               Out of stock

@@ -60,164 +60,170 @@ const ProductDetails = ({ open, setOpen, productDetails, handleCartItem }) => {
         <span className="sr-only">product details dailog</span>
       </DialogTitle>
       <DialogContent className="flex items-center justify-center w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw]  h-[70vh]">
-      <div className="grid grid-cols-1 sm:grid-cols-2 overflow-hidden overflow-y-scroll h-full w-full  gap-8 sm:p-12 items-center  ">
-        <div className="relative  rounded-lg">
-          <img
-            loading="lazy"
-            src={productDetails?.image}
-            alt={productDetails?.title}
-            width={600}
-            height={600}
-            className=" object-cover"
-          />
-          {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <PuffLoader color="#3671d6" size="40px" />
-            </div>
-          )}
-        </div>
-        <div className="">
-          <div>
-            <h1 className="text-3xl font-extrabold">{productDetails?.title}</h1>
-            <p className="text-muted-foreground my-4 text-lg max-h-20 overflow-hidden overflow-y-scroll border rounded p-2">
-              {productDetails?.description}
-            </p>
-          </div>
-          <div className="flex justify-between items-center">
-            <span
-              className={`${
-                productDetails?.salePrice > 0 ? "line-through" : ""
-              } text-2xl font-semibold text-primary`}
-            >
-              ₨.{productDetails?.price}
-            </span>
-            <span
-              className={`${
-                productDetails?.salePrice > 0 ? "block" : "hidden"
-              } text-2xl font-bold text-muted-foreground`}
-            >
-              ₨.{productDetails?.salePrice}
-            </span>
-          </div>
-          <div className="flex items-center gap-2 mt-2">
-            <div className="flex items-center gap-2">
-              {retingScale.map((star) => (
-                <Button
-                  variant="outline"
-                  className={`p-2 rounded-full cursor-default  hover:bg-white ${
-                    star <= avgReviews.toFixed(1)
-                      ? "text-yellow-300 hover:text-yellow-300"
-                      : ""
-                  }`}
-                  key={star}
-                >
-                  <StarIcon
-                    className={`size-6 ${
-                      star <= avgReviews.toFixed(1)
-                        ? "fill-yellow-300"
-                        : "fill-black"
-                    }`}
-                  />
-                </Button>
-              ))}
-            </div>
-            <span className="text-muted-foreground">
-              ({avgReviews.toFixed(1)})
-            </span>
-          </div>
-          <div className="my-5">
-            {productDetails?.totalStock === 0 ? (
-              <Button className="w-full cursor-not-allowed opacity-40">
-                Out of stock
-              </Button>
+        <div className="grid grid-cols-1 sm:grid-cols-2 overflow-hidden overflow-y-scroll h-full w-full  gap-8 sm:p-12 items-center  ">
+          <div className="relative  rounded-lg">
+            {isLoading ? (
+              <div className=" flex items-center justify-center">
+                <PuffLoader color="#3671d6" size="40px" />
+              </div>
             ) : (
-              <Button
-                onClick={() =>
-                  handleCartItem(productDetails?._id, productDetails.totalStock)
-                }
-                className="w-full"
-              >
-                Add to cart
-              </Button>
+              <img
+                loading="lazy"
+                src={productDetails?.image}
+                alt={productDetails?.title}
+                width={600}
+                height={600}
+                className=" object-cover"
+              />
             )}
           </div>
-          <Separator />
-          <div className="max-h-[300px] overflow-hidden">
-            <h2 className="text-xl font-bold mb-4">
-              Reviews({reviewtList?.length || 0})
-            </h2>
-            <div className="grid gap-6 max-h-20 overflow-hidden overflow-y-scroll">
-              {reviewtList &&
-                reviewtList?.length > 0 &&
-                reviewtList.map((reviewItem) => (
-                  <div className="flex gap-4">
-                    <Avatar className="size-10 border">
-                      <AvatarFallback>
-                        {reviewItem?.userName[0].toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="grid gap-1">
-                      <div className="flex items-center gap-2">
-                        <h3>{reviewItem?.userName}</h3>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {retingScale.map((star) => (
-                          <Button
-                            variant="outline"
-                            className={`p-2 rounded-full cursor-default   hover:bg-white ${
-                              star <= reviewItem?.reviewValue
-                                ? "text-yellow-300 hover:text-yellow-300"
-                                : ""
-                            }`}
-                            key={star}
-                          >
-                            <StarIcon
-                              className={`size-6 ${
-                                star <= reviewItem?.reviewValue
-                                  ? "fill-yellow-300"
-                                  : "fill-black"
-                              }`}
-                            />
-                          </Button>
-                        ))}
-                      </div>
-                      <p className="text-muted-foreground">
-                        {reviewItem?.reviewMessage}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+          <div className="">
+            <div>
+              <h1 className="text-3xl font-extrabold">
+                {productDetails?.title}
+              </h1>
+              <p className="text-muted-foreground my-4 text-lg max-h-20 overflow-hidden overflow-y-scroll border rounded p-2">
+                {productDetails?.description}
+              </p>
             </div>
-            <div className="mt-1 flex flex-col gap-2 border p-4 rounded">
-              <div className="flex gap-2 items-center">
+            <div className="flex justify-between items-center">
+              <span
+                className={`${
+                  productDetails?.salePrice > 0 ? "line-through" : ""
+                } text-2xl font-semibold text-primary`}
+              >
+                ₨.{productDetails?.price}
+              </span>
+              <span
+                className={`${
+                  productDetails?.salePrice > 0 ? "block" : "hidden"
+                } text-2xl font-bold text-muted-foreground`}
+              >
+                ₨.{productDetails?.salePrice}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 mt-2">
+              <div className="flex items-center gap-2">
                 {retingScale.map((star) => (
                   <Button
                     variant="outline"
-                    className={`p-2 rounded-full transition-colors ${
-                      star <= starValue
-                        ? "text-yellow-300 hover:text-primary-foreground hover:bg-yellow-300"
-                        : "hover:text-primary-foreground hover:bg-primary"
+                    className={`p-2 rounded-full cursor-default  hover:bg-white ${
+                      star <= avgReviews.toFixed(1)
+                        ? "text-yellow-300 hover:text-yellow-300"
+                        : ""
                     }`}
                     key={star}
-                    onClick={() => setStarValue(star)}
                   >
                     <StarIcon
                       className={`size-6 ${
-                        star <= starValue ? "fill-yellow-300" : "fill-black"
+                        star <= avgReviews.toFixed(1)
+                          ? "fill-yellow-300"
+                          : "fill-black"
                       }`}
                     />
                   </Button>
                 ))}
               </div>
-              <Input
-                onChange={(e) => setReviewText(e.target.value)}
-                value={reviewText}
-                placeholder="write a review..."
-              />
-              <Button onClick={handleAddReview}>Submit</Button>
+              <span className="text-muted-foreground">
+                ({avgReviews.toFixed(1)})
+              </span>
+            </div>
+            <div className="my-5">
+              {productDetails?.totalStock === 0 ? (
+                <Button className="w-full cursor-not-allowed opacity-40">
+                  Out of stock
+                </Button>
+              ) : (
+                <Button
+                  onClick={() =>
+                    handleCartItem(
+                      productDetails?._id,
+                      productDetails.totalStock
+                    )
+                  }
+                  className="w-full"
+                >
+                  Add to cart
+                </Button>
+              )}
+            </div>
+            <Separator />
+            <div className="max-h-[300px] overflow-hidden">
+              <h2 className="text-xl font-bold mb-4">
+                Reviews({reviewtList?.length || 0})
+              </h2>
+              <div className="grid gap-6 max-h-20 overflow-hidden overflow-y-scroll">
+                {reviewtList &&
+                  reviewtList?.length > 0 &&
+                  reviewtList.map((reviewItem) => (
+                    <div className="flex gap-4">
+                      <Avatar className="size-10 border">
+                        <AvatarFallback>
+                          {reviewItem?.userName[0].toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="grid gap-1">
+                        <div className="flex items-center gap-2">
+                          <h3>{reviewItem?.userName}</h3>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {retingScale.map((star) => (
+                            <Button
+                              variant="outline"
+                              className={`p-2 rounded-full cursor-default   hover:bg-white ${
+                                star <= reviewItem?.reviewValue
+                                  ? "text-yellow-300 hover:text-yellow-300"
+                                  : ""
+                              }`}
+                              key={star}
+                            >
+                              <StarIcon
+                                className={`size-6 ${
+                                  star <= reviewItem?.reviewValue
+                                    ? "fill-yellow-300"
+                                    : "fill-black"
+                                }`}
+                              />
+                            </Button>
+                          ))}
+                        </div>
+                        <p className="text-muted-foreground">
+                          {reviewItem?.reviewMessage}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+              <div className="mt-1 flex flex-col gap-2 border p-4 rounded">
+                <div className="flex gap-2 items-center">
+                  {retingScale.map((star) => (
+                    <Button
+                      variant="outline"
+                      className={`p-2 rounded-full transition-colors ${
+                        star <= starValue
+                          ? "text-yellow-300 hover:text-primary-foreground hover:bg-yellow-300"
+                          : "hover:text-primary-foreground hover:bg-primary"
+                      }`}
+                      key={star}
+                      onClick={() => setStarValue(star)}
+                    >
+                      <StarIcon
+                        className={`size-6 ${
+                          star <= starValue ? "fill-yellow-300" : "fill-black"
+                        }`}
+                      />
+                    </Button>
+                  ))}
+                </div>
+                <Input
+                  onChange={(e) => setReviewText(e.target.value)}
+                  value={reviewText}
+                  placeholder="write a review..."
+                />
+                <Button onClick={handleAddReview}>Submit</Button>
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </DialogContent>
     </Dialog>
