@@ -83,7 +83,7 @@ const ShoppingCheckout = () => {
           <ShoppingAddress />
         </div>
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-4 overflow-y-auto h-40 lg:h-52">
+          <div className="flex flex-col gap-4 overflow-y-auto h-40 ">
             {cartItems && cartItems?.items?.length > 0
               ? cartItems?.items.map((item) => (
                   <CartContent key={item?.productId} cartItem={item} />

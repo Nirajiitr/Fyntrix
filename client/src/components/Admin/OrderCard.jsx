@@ -81,7 +81,7 @@ const AdminOrderCard = () => {
                         {orderItem?.orderStatus}
                       </Badge>
                     </TableCell>
-                    <TableCell>${orderItem?.totalAmount}</TableCell>
+                    <TableCell>₨.{orderItem?.totalAmount}</TableCell>
                     <TableCell>
                       <Badge
                         className={`${

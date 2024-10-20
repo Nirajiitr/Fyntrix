@@ -45,34 +45,9 @@ const createOrder = async (req, res) => {
       success_url: `${process.env.CLIENT_BASE_URL}/payment/process?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.CLIENT_BASE_URL}/shop/payment/cancel`,
       customer_email: userEmail,
-    
-      shipping_address_collection: {
-        allowed_countries: ['IN'],
-      },
-    
-      shipping_options: [
-        {
-          shipping_rate_data: {
-            type: 'fixed_amount',
-            fixed_amount: {
-              amount: 1500, 
-              currency: 'inr',
-            },
-            display_name: 'Standard Shipping',
-            delivery_estimate: {
-              minimum: {
-                unit: 'business_day',
-                value: 5,
-              },
-              maximum: {
-                unit: 'business_day',
-                value: 7,
-              },
-            },
-          },
-        },
-      ],
-    
+      
+      billing_address_collection: 'required',
+      
       line_items: cartItems.map((item) => ({
         price_data: {
           currency: "inr",
@@ -90,6 +65,7 @@ const createOrder = async (req, res) => {
           "Fyntrix is an innovative e-commerce platform offering a diverse range of products, from fashion and electronics to home goods. It prioritizes user experience with a clean, responsive design, personalized recommendations, and secure shopping. Fyntrix is built to deliver quality and convenience, transforming the online shopping experience.",
       }
     });
+    
     
     
 
