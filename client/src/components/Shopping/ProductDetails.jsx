@@ -79,7 +79,7 @@ const ProductDetails = ({ open, setOpen, productDetails, handleCartItem }) => {
         <div className="">
           <div>
             <h1 className="text-3xl font-extrabold">{productDetails?.title}</h1>
-            <p className="text-muted-foreground my-4 text-lg max-h-20 overflow-hidden overflow-y-scroll">
+            <p className="text-muted-foreground my-4 text-lg max-h-20 overflow-hidden overflow-y-scroll border rounded p-2">
               {productDetails?.description}
             </p>
           </div>
@@ -96,7 +96,7 @@ const ProductDetails = ({ open, setOpen, productDetails, handleCartItem }) => {
                 productDetails?.salePrice > 0 ? "block" : "hidden"
               } text-2xl font-bold text-muted-foreground`}
             >
-              ${productDetails?.salePrice}
+              ₨.{productDetails?.salePrice}
             </span>
           </div>
           <div className="flex items-center gap-2 mt-2">
