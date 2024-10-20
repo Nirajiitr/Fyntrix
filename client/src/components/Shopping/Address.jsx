@@ -15,10 +15,11 @@ import AddressCard from "./AddressCard";
 const ShoppingAddress = () => {
   const [formData, setFormData] = useState({
     address: "",
-    city: "",
     pincode: "",
+    city: "",
+    state: "",
+    country: "",
     phone: "",
-    notes: "",
   });
   const [currenteditedId, setCurrentEditedId] = useState(null);
   const dispatch = useDispatch();
@@ -29,9 +30,7 @@ const ShoppingAddress = () => {
   }, [dispatch]);
   const handleAddress = (e) => {
     e.preventDefault();
-    if (addressList.length >= 3 && currenteditedId === null) {
-      return toast.error("You can add max 3 addresses");
-    }
+
     if (currenteditedId !== null) {
       dispatch(
         updateAddress({
@@ -46,10 +45,11 @@ const ShoppingAddress = () => {
           dispatch(getAllAdress(user?._id));
           setFormData({
             address: "",
-            city: "",
             pincode: "",
+            city: "",
+            state: "",
+            country: "",
             phone: "",
-            notes: "",
           });
         }
       });
@@ -60,10 +60,11 @@ const ShoppingAddress = () => {
           dispatch(getAllAdress(user?._id));
           setFormData({
             address: "",
-            city: "",
             pincode: "",
+            city: "",
+            state: "",
+            country: "",
             phone: "",
-            notes: "",
           });
         }
       });
@@ -84,10 +85,11 @@ const ShoppingAddress = () => {
     setFormData({
       ...formData,
       address: getCurrentAddres?.address,
-      city: getCurrentAddres?.city,
       pincode: getCurrentAddres?.pincode,
+      city: getCurrentAddres?.city,
+      state: getCurrentAddres?.state,
+      country: getCurrentAddres?.country, 
       phone: getCurrentAddres?.phone,
-      notes: getCurrentAddres?.notes,
     });
   };
   return (

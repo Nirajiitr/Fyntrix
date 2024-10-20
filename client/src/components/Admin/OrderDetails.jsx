@@ -48,7 +48,7 @@ const AdminOrderDetails = ({ orderDetails, setOpenDetails }) => {
           </div>
           <div className="flex items-center justify-between mt-2">
             <p className="font-medium">Order Price</p>
-            <Label>${orderDetails?.totalAmount}</Label>
+            <Label>₨.{orderDetails?.totalAmount}</Label>
           </div>
           <Separator />
           <div className="grid gap-4">
@@ -60,7 +60,7 @@ const AdminOrderDetails = ({ orderDetails, setOpenDetails }) => {
                       <li className="flex items-center justify-between">
                         <span>Title: {item?.title}</span>
                         <span>Quantity: {item?.quantity}</span>
-                        <span>Price: ${item?.price}</span>
+                        <span>Price: ₨.{item?.price}</span>
                       </li>
                     ))
                   : null}

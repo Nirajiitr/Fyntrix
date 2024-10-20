@@ -13,13 +13,13 @@ const initialState = {
 export const addAddress = createAsyncThunk(
   "/address/addAddress",
   async (
-    { userId, address, city, pincode, phone, notes },
+    { userId, address, pincode, city, state, country, phone},
     { rejectWithValue }
   ) => {
     try {
       const result = await axios.post(
         `${import.meta.env.VITE_SERVER_BASE_URL}/api/shop/address/add-address`,
-        { userId, address, city, pincode, phone, notes }
+        { userId, address, pincode, city, state, country, phone},
       );
       return result?.data;
     } catch (error) {

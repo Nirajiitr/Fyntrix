@@ -180,6 +180,12 @@ export const addressFormControls = [
     componentType: "input",
     type: "text",
     placeholder: "Enter your address",
+  },{
+    label: "Pincode",
+    name: "pincode",
+    componentType: "input",
+    type: "text",
+    placeholder: "Enter your pincode",
   },
   {
     label: "City",
@@ -189,12 +195,20 @@ export const addressFormControls = [
     placeholder: "Enter your city",
   },
   {
-    label: "Pincode",
-    name: "pincode",
+    label: "State",
+    name: "state",
     componentType: "input",
     type: "text",
-    placeholder: "Enter your pincode",
+    placeholder: "Enter your state",
   },
+  {
+    label: "Country",
+    name: "country",
+    componentType: "input",
+    type: "text",
+    placeholder: "Enter your country",
+  },
+  
   {
     label: "Phone",
     name: "phone",
@@ -202,10 +216,5 @@ export const addressFormControls = [
     type: "text",
     placeholder: "Enter your phone number",
   },
-  {
-    label: "Notes",
-    name: "notes",
-    componentType: "textarea",
-    placeholder: "Enter any additional notes",
-  },
+  
 ];

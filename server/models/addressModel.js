@@ -4,10 +4,12 @@ const addressSchema = new mongoose.Schema(
   {
     userId: String,
     address: String,
-    city: String,
     pincode: String,
+    city: String,
+    state: String,
+    country: String,
     phone: String,
-    notes: String,
+    
   },
   {
     timestamps: true,

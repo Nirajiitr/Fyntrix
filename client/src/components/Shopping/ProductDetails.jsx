@@ -89,7 +89,7 @@ const ProductDetails = ({ open, setOpen, productDetails, handleCartItem }) => {
                 productDetails?.salePrice > 0 ? "line-through" : ""
               } text-2xl font-semibold text-primary`}
             >
-              ${productDetails?.price}
+              ₨.{productDetails?.price}
             </span>
             <span
               className={`${

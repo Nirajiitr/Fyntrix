@@ -2,6 +2,7 @@ import stripe from "../../config/stripe.js";
 import { Cart } from "../../models/cartModel.js";
 import { Order } from "../../models/orderModel.js";
 import { Product } from "../../models/productModel.js";
+import { User } from "../../models/userModel.js";
 
 const createOrder = async (req, res) => {
   try {
@@ -30,16 +31,51 @@ const createOrder = async (req, res) => {
         message: "Missing required order details",
       });
     }
-
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User does not exist!",
+      });
+    }
+    
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
       success_url: `${process.env.CLIENT_BASE_URL}/payment/process?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.CLIENT_BASE_URL}/shop/payment/cancel`,
       customer_email: userEmail,
+    
+      shipping_address_collection: {
+        allowed_countries: ['IN'],
+      },
+    
+      shipping_options: [
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: {
+              amount: 1500, 
+              currency: 'inr',
+            },
+            display_name: 'Standard Shipping',
+            delivery_estimate: {
+              minimum: {
+                unit: 'business_day',
+                value: 5,
+              },
+              maximum: {
+                unit: 'business_day',
+                value: 7,
+              },
+            },
+          },
+        },
+      ],
+    
       line_items: cartItems.map((item) => ({
         price_data: {
-          currency: "usd",
+          currency: "inr",
           unit_amount: item.price * 100,
           product_data: {
             name: item.title,
@@ -48,7 +84,14 @@ const createOrder = async (req, res) => {
         },
         quantity: item.quantity || 1,
       })),
+    
+      payment_intent_data: {
+        description:
+          "Fyntrix is an innovative e-commerce platform offering a diverse range of products, from fashion and electronics to home goods. It prioritizes user experience with a clean, responsive design, personalized recommendations, and secure shopping. Fyntrix is built to deliver quality and convenience, transforming the online shopping experience.",
+      }
     });
+    
+    
 
     const newOrder = new Order({
       userId,

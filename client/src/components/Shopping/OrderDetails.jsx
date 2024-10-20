@@ -25,7 +25,7 @@ const ShoppingOrderDetails = ({ orderDetails }) => {
           </div>
           <div className="flex items-center justify-between mt-2">
             <p className="font-medium">Order Price</p>
-            <Label>${orderDetails?.totalAmount}</Label>
+            <Label>₨.{orderDetails?.totalAmount}</Label>
           </div>
           <Separator />
           <div className="grid gap-4">
@@ -37,7 +37,7 @@ const ShoppingOrderDetails = ({ orderDetails }) => {
                       <li className="flex items-center justify-between">
                         <span>Title: {item?.title}</span>
                         <span>Quantity: {item?.quantity}</span>
-                        <span>Price: ${item?.price}</span>
+                        <span>Price: ₨.{item?.price}</span>
                       </li>
                     ))
                   : null}
@@ -50,10 +50,12 @@ const ShoppingOrderDetails = ({ orderDetails }) => {
               <div className="grid gap-0.5 text-muted-foreground">
                 <span>{user.fullname}</span>
                 <span>Address: {orderDetails?.addressInfo?.address}</span>
-                <span>City: {orderDetails?.addressInfo?.city}</span>
                 <span>Pincode: {orderDetails?.addressInfo?.pincode}</span>
+                <span>City: {orderDetails?.addressInfo?.city}</span>
+                <span>State: {orderDetails?.addressInfo?.state}</span>
+                <span>Country: {orderDetails?.addressInfo?.country}</span>
                 <span>Phone: {orderDetails?.addressInfo?.phone}</span>
-                <span>Notes: {orderDetails?.addressInfo?.notes}</span>
+                
               </div>
             </div>
           </div>

@@ -45,10 +45,11 @@ const ShoppingCheckout = () => {
       addressInfo: {
         addressId: selectedAddress?._id,
         address: selectedAddress?.address,
-        city: selectedAddress?.city,
         pincode: selectedAddress?.pincode,
+        city: selectedAddress?.city,
+        state: selectedAddress?.state,
+        country: selectedAddress?.country,
         phone: selectedAddress?.phone,
-        notes: selectedAddress?.notes,
       },
       orderStatus: "pending",
       paymentStatus: "unpaid",
@@ -67,14 +68,7 @@ const ShoppingCheckout = () => {
   if (approvalURl) {
     window.location.href = approvalURl;
   }
-  if (paymentInitiate) {
-    return (
-      <div className="w-screen h-screen flex flex-col gap-4 items-center justify-center">
-        <PuffLoader color="#3671d6" size="40px" />
-        <p>processing with card...</p>
-      </div>
-    );
-  }
+
   return (
     <div className="flex flex-col">
       <div className="relative h-[300px] w-full overflow-hidden hidden sm:block">
@@ -86,19 +80,19 @@ const ShoppingCheckout = () => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 p-5">
         <div className="overflow-y-auto h-56 lg:h-96">
-        <ShoppingAddress />
+          <ShoppingAddress />
         </div>
         <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-4 overflow-y-auto h-40 lg:h-52">
-          {cartItems && cartItems?.items?.length > 0
-            ? cartItems?.items.map((item) => (
-                <CartContent key={item?.productId} cartItem={item} />
-              ))
-            : null}
+          <div className="flex flex-col gap-4 overflow-y-auto h-40 lg:h-52">
+            {cartItems && cartItems?.items?.length > 0
+              ? cartItems?.items.map((item) => (
+                  <CartContent key={item?.productId} cartItem={item} />
+                ))
+              : null}
           </div>
           <div className="mt-8 rounded shadow p-2 flex items-start justify-between">
             <span className="font-bold">Total</span>
-            <span className="font-bold ">${totalPrice}</span>
+            <span className="font-bold ">₨.{totalPrice}</span>
           </div>
           <div className="mt-4 w-full">
             <Button
@@ -106,7 +100,14 @@ const ShoppingCheckout = () => {
               onClick={handleChechOut}
               className="w-full"
             >
-              Checkout with card
+              {paymentInitiate ? (
+                <div className="flex gap-2 items-center">
+                  <PuffLoader color="#3671d6" size="40px" />
+                  <p>processing with card...</p>
+                </div>
+              ) : (
+                "Checkout with card"
+              )}
             </Button>
           </div>
         </div>

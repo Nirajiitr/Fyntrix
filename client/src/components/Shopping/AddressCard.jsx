@@ -28,10 +28,12 @@ const AddressCard = ({
       />
       <CardContent className="grid gap-4 p-4">
         <Label>Address: {addressInfo?.address}</Label>
-        <Label>City: {addressInfo?.city}</Label>
         <Label>Pin Code: {addressInfo?.pincode}</Label>
+        <Label>City: {addressInfo?.city}</Label>
+        <Label>State: {addressInfo?.state}</Label>
+        <Label>Country: {addressInfo?.country}</Label>
         <Label>Phone Number: {addressInfo?.phone}</Label>
-        <Label>Notes: {addressInfo?.notes}</Label>
+       
       </CardContent>
       <CardFooter className="flex justify-between p-3">
         <Button onClick={() => handleEditAddress(addressInfo)}>Edit</Button>
