@@ -96,7 +96,6 @@ const App = () => {
         </Route>
         <Route path="/payment/process" element={<PaymentProcess />} />
 
-       
         <Route path="/" element={<DefaultPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
